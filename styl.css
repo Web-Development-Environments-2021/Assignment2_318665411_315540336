@@ -10,7 +10,11 @@
     justify-content: center;
     background-color: black;*/
 }
-
+#Register{
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
 #Welcome img{
     width: 75%;
 
@@ -34,7 +38,8 @@ nav ul {
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 15px;
 }
 
 nav ul li{
@@ -43,57 +48,31 @@ nav ul li{
     text-align: center;
     font-size: 30px;
     font-weight: bold;
-}
-
-
-/*nav ul li {
-    --c: blue;
-    color: var(--c);
-    font-size: 16px;
-    border: 0.3em solid var(--c);
+    border: 0.2em solid blue;
     border-radius: 0.5em;
-    width: 12em;
-    height: 3em;
     text-transform: uppercase;
-    font-weight: bold;
-    font-family: sans-serif;
+    font-family: 'Original Surfer', cursive;
     letter-spacing: 0.1em;
-    text-align: center;
-    line-height: 3em;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    transition: 0.5s;
-    margin: 1em;
-    display: inline;
 }
 
-nav ul li span {
-    position: absolute;
-    width: 25%;
-    height: 100%;
-    background-color: var(--c);
-    transform: translateY(150%);
-    border-radius: 50%;
-    left: calc((var(--n) - 1) * 25%);
-    transition: 0.5s;
-    transition-delay: calc((var(--n) - 1) * 0.1s);
-    z-index: -1;
+.wel{
+    text-decoration: none;
 }
 
-nav ul li:hover {
-    color: black;
+
+a.wel:visited{
+    color: blue;
 }
 
-nav ul li:hover span {
-    transform: translateY(0) scale(2);
+nav ul li:hover,
+nav ul li:focus {
+    animation: pulse 1s;
+    box-shadow: 0 0 0 0.3em rgba(0,0,255,0.5);
 }
 
-nav ul li span:nth-child(1) {
-    --n: 1;
+@keyframes pulse {
+    0% { box-shadow: 5px 5px;
+        text-shadow: 2px 2px aqua}
 }
 
-nav ul li span:nth-child(2) {
-    --n: 2;
-}*/
 

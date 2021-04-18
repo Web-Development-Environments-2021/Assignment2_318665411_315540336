@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="./jquery-3.4.1.slim.min.js"></script>
+		<script
+				src="https://code.jquery.com/jquery-3.4.1.slim.js"
+				integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
+				crossorigin="anonymous"></script>
 		<script type="text/javascript" src="./app.js"></script>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,16 +17,18 @@
 		<h1 style="color: white">WELCOME 👋</h1>
 		<nav style="color: white">
 			<ul>
-				<li>
-					Login
-					<span></span><span></span><span></span><span></span>
+				<li onclick="">
+					<a class = "wel" href="#" >Login</a>
 				</li>
 				<li>
-					Register
-					<span></span><span></span><span></span><span></span>
+					<a class="wel" id="reg" href="#">Register</a>
 				</li>
 			</ul>
 		</nav>
+		<h1><a class="wel" href="https://www.youtube.com/watch?v=pIrvpn3k9A4"> Click Here To See Pacman In Real Life</a></h1>
+	</div>
+	<div id="Register" style="visibility: hidden; color: white">
+		Hello world
 	</div>
 		<!--<div id="score">
 			<label for="lblScore">SCORE:</label>
@@ -36,5 +41,13 @@
 		<div id="game">
 			<canvas id="canvas" height="600" width="600"></canvas>
 		</div>-->
+	<script>$("#reg").click(function (e){
+		e.preventDefault()
+		console.log("hhe")
+		$("#Welcome").hide()
+		$("#Register").show()
+		$("#Register").css("visibility","visible")
+		return false
+	})</script>
 	</body>
 </html>

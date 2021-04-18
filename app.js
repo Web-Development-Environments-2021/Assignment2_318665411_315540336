@@ -1,16 +1,18 @@
-var context;
-var shape = new Object();
-var board;
-var score;
-var pac_color;
-var start_time;
-var time_elapsed;
-var interval;
+let context;
+let shape = new Object();
+let board;
+let score;
+let pac_color;
+let start_time;
+let time_elapsed;
+let interval;
+
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
 	Start();
 });
+
 
 function Start() {
 	board = new Array();
@@ -170,3 +172,4 @@ function UpdatePosition() {
 		Draw();
 	}
 }
+
