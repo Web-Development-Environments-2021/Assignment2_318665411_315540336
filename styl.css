@@ -2,6 +2,7 @@
 
 
 body{
+    background-color:black;
     overflow-y: hidden;
 }
 #Welcome {
@@ -12,12 +13,16 @@ body{
 
 
 #Register{
-    margin: auto;
+    margin: 20px 0;
+    font-family: 'Lato';
+    font-weight: 300;
+    font-size: 1.25rem;
     width: 50%;
     padding: 10px;
     position: relative;
-    top: 32vh;
-    left: 16vw;
+    top: 7.5vh;
+    left: 32.5vw;
+
 
 }
 #Welcome img{
@@ -80,7 +85,48 @@ nav ul li:focus {
         text-shadow: 2px 2px aqua}
 }
 
-input{
+#register_form{
+
+}
+#register_form input{
     display: block;
+}
+
+#register_form, #register_form p{
+    margin: 20px;
+}
+
+p.note{
+    font-size: 1rem;
+    color:red;
+}
+
+
+input{
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 4px;
+    font-family: 'Lato';
+    width: 500px;
+    margin-top: 10px;
+}
+
+
+label {
+    width: 300px;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+#register_form label span {
+    font-size: 1rem;
+}
+
+#register_form label.error {
+    color: red;
+    font-size: 1rem;
+    display: block;
+    margin-top: 5px;
 }
 

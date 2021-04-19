@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 		<script src="app.js"></script>
-		<script src="app2.js"></script>
-		<script
-				src="https://code.jquery.com/jquery-3.4.1.slim.js"
-				integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
-				crossorigin="anonymous"></script>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="styl.css">
@@ -24,7 +22,7 @@
 		</script>
 	</head>
 
-	<body style="background-color: black">
+	<body>
 	<div id="Welcome">
 		<image src="logo.gif"></image>
 		<h1 style="color: white">WELCOME 👋</h1>
@@ -41,21 +39,37 @@
 		<h1><a class="wel" href="https://www.youtube.com/watch?v=pIrvpn3k9A4"> Click Here To See Pacman In Real Life</a></h1>
 	</div>
 	<div id="Register" style="visibility: hidden; color: white">
-		<form id="register_form" onsubmit="validate()">
-			<label>Username: </label>
-			<input type="text" placeholder="username">
-			<label>Password: </label>
-			<input type="password" placeholder="password">
-			<label>Name: </label>
-			<input type="text" placeholder="John Doe">
-			<label>Email: </label>
-			<input type="email" placeholder="yourmail@example.com">
-			<label>BirthDay: </label>
-			<input type="text" id="datepicker" placeholder="birthday">
-			<input type="submit" value="SIGN UP">
+		<form id="register_form" method="post">
+			<p>
+				<label>Username <span>(required)</span></label>
+				<input id="uname" type="text" placeholder="username">
+			</p>
+			<p>
+				<label>Password <span>(required, at least 6 characthers which are both letters and digits)</span></label>
+				<input id="pass" type="password" placeholder="password">
+			</p>
+			<p>
+				<label>First Name <span>(required)</span></label>
+				<input id="fname" type="text" placeholder="John">
+			</p>
+			<p>
+				<label>Last Name <span>(required)</span></label>
+				<input id="lname" type="text" placeholder="Doe">
+			</p>
+			<p>
+				<label>Email <span>(required)</span></label>
+				<input id="email" type="email" placeholder="yourmail@example.com">
+			</p>
+			<p>
+				<label>BirthDay <span>(required)</span> </label>
+				<input id="date" type="text" id="datepicker" placeholder="birthday">
+			</p>
+			<p>
+				<input id="sub" type="submit" value="SIGN UP">
+			</p>
 		</form>
 	</div>
-		<div id="score">
+		<!--<div id="score">
 			<label for="lblScore">SCORE:</label>
 			<input id="lblScore" type="text" />
 		</div>
@@ -65,10 +79,11 @@
 		</div>
 		<div id="game">
 			<canvas id="canvas" height="600" width="600"></canvas>
-		</div>
+		</div>-->
 	<script>$("#reg").click(function (e){
-		e.preventDefault()
+		$("body").css("background-color","rgb(30,30,40)")
 		$("#Welcome").hide()
+		$("#Welcome").css("visibility","hidden")
 		$("#Register").show()
 		$("#Register").css("visibility","visible")
 		return false
