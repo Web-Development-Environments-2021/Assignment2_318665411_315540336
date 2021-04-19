@@ -5,10 +5,23 @@
 				src="https://code.jquery.com/jquery-3.4.1.slim.js"
 				integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
 				crossorigin="anonymous"></script>
-		<script type="text/javascript" src="./app.js"></script>
+		<script type="text/javascript" src="app.js"></script>
+		<script src="app2.js"></script>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="styl.css">
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<link rel="stylesheet" href="/resources/demos/style.css">
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script>
+			$( function() {
+				$( "#datepicker" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			} );
+		</script>
 	</head>
 
 	<body style="background-color: black">
@@ -28,7 +41,19 @@
 		<h1><a class="wel" href="https://www.youtube.com/watch?v=pIrvpn3k9A4"> Click Here To See Pacman In Real Life</a></h1>
 	</div>
 	<div id="Register" style="visibility: hidden; color: white">
-		Hello world
+		<form id="register_form" onsubmit="validate()">
+			<label>Username: </label>
+			<input type="text" placeholder="username">
+			<label>Password: </label>
+			<input type="password" placeholder="password">
+			<label>Name: </label>
+			<input type="text" placeholder="John Doe">
+			<label>Email: </label>
+			<input type="email" placeholder="yourmail@example.com">
+			<label>BirthDay: </label>
+			<input type="text" id="datepicker" placeholder="birthday">
+			<input type="submit" value="SIGN UP">
+		</form>
 	</div>
 		<!--<div id="score">
 			<label for="lblScore">SCORE:</label>
