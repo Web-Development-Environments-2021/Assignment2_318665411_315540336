@@ -1,6 +1,7 @@
 function validate(){
-    $('#register_form input:text,password,email').each(function() {
-        if($(this).val()==$(this).attr('placeholder'))
-            console.log("hello")
-    });
+    let res = ($("input:empty").length === 0)
+    if (res !== true){
+        alert("error")
+        return false
+    }
 }

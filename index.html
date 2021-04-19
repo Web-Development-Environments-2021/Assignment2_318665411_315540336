@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script src="app.js"></script>
+		<script src="app2.js"></script>
 		<script
 				src="https://code.jquery.com/jquery-3.4.1.slim.js"
 				integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
 				crossorigin="anonymous"></script>
-		<script type="text/javascript" src="app.js"></script>
-		<script src="app2.js"></script>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="styl.css">
@@ -55,7 +55,7 @@
 			<input type="submit" value="SIGN UP">
 		</form>
 	</div>
-		<!--<div id="score">
+		<div id="score">
 			<label for="lblScore">SCORE:</label>
 			<input id="lblScore" type="text" />
 		</div>
@@ -65,10 +65,9 @@
 		</div>
 		<div id="game">
 			<canvas id="canvas" height="600" width="600"></canvas>
-		</div>-->
+		</div>
 	<script>$("#reg").click(function (e){
 		e.preventDefault()
-		console.log("hhe")
 		$("#Welcome").hide()
 		$("#Register").show()
 		$("#Register").css("visibility","visible")
