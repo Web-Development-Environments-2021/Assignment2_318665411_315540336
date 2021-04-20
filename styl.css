@@ -21,8 +21,18 @@ body{
     position: relative;
     top: 7.5vh;
     left: 32.5vw;
+}
 
-
+#Login{
+    margin: 20px 0;
+    font-family: 'Lato';
+    font-weight: 300;
+    font-size: 1.25rem;
+    width: 50%;
+    padding: 10px;
+    position: relative;
+    bottom: 25vh;
+    left: 32.5vw;
 }
 #Welcome img{
     width: 75%;
@@ -84,16 +94,16 @@ nav ul li:focus {
         text-shadow: 2px 2px aqua}
 }
 
-#Register form, p {
+#Register form, p ,#Login form,p{
     margin: 20px;
 }
 
-#Register p.note {
+#Register p.note, #login p.note{
     font-size: 1rem;
     color: red;
 }
 
-#Register input, textarea {
+#Register input, textarea #Login input,textarea {
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 4px;
@@ -102,7 +112,7 @@ nav ul li:focus {
     margin-top: 10px;
 }
 
-#Register label {
+#Register label ,#Login label{
     width: 300px;
     font-weight: bold;
     display: inline-block;
@@ -113,20 +123,21 @@ nav ul li:focus {
     font-size: 1rem;
 }
 
-#Register label.error {
+#Register label.error ,#Login label.error{
     color: red;
     font-size: 1rem;
     display: block;
     margin-top: 5px;
 }
 
-#Register input.error, #Register textarea.error {
+#Register input.error, #Register textarea.error,#Login input.error, #Login textarea.error {
     border: 1px dashed red;
     font-weight: 300;
     color: red;
 }
 
-#Register [type="submit"], #Register[type="reset"], #Register button, #Register html [type="button"] {
+#Register [type="submit"], #Register[type="reset"], #Register button, #Register html [type="button"]
+#Login [type="submit"],#Login[type="reset"],#Login button,#Login html [type="button"]{
     margin-left: 0;
     border-radius: 0;
     background: black;

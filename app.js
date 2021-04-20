@@ -7,9 +7,24 @@ let start_time;
 let time_elapsed;
 let interval;
 let canvas;
+let users = []
 
+
+class User{
+	constructor(user_name,first_name,last_name,email,password,birthday) {
+		this.user_name = user_name
+		this.first_name = first_name
+		this.last_name = last_name
+		this.email = email
+		this.password = password
+		this.birthday = birthday
+	}
+}
 
  $(document).ready(function() {
+	 let k_user = new User('k','k','k','k@gmail.com','k','1/1/1970')
+	 users.push(k_user)
+	 console.log(k_user)
  	//context = canvas.getContext("2d");
 	 $.validator.addMethod("lettersonly", function(value, element) {
 		 return this.optional(element) || /^[a-zA-Z ]*$/.test(value);
@@ -70,6 +85,16 @@ let canvas;
 			 }
 		 })
 
+	 $("#login_form").validate({
+		 rules:{
+		 	uname:{
+		 		required:true,
+			},
+			password:{
+		 		required:true,
+			}
+		 }
+	 })
 	 	// if ($("input:password").val.length < 6){
 		// 	alert('error')
 		// 	return false
@@ -237,4 +262,53 @@ let canvas;
 // 		Draw();
 // 	}
 // }
+
+function go_to_reg(){
+	$("body").css("background-color","rgb(30,30,40)")
+	$("#Welcome").hide()
+	$("#Welcome").css("visibility","hidden")
+	$("#Register").show()
+	$("#Register").css("visibility","visible")
+}
+
+function go_to_login(){
+	$("body").css("background-color","rgb(30,30,40)")
+	$("#Welcome").hide()
+	$("#Welcome").css("visibility","hidden")
+	$("#Login").show()
+	$("#Login").css("visibility","visible")
+}
+
+function validate_vals(){
+	let username = $('#username').val()
+	let password = $('#login_password').val()
+	let user = users.find((u)=>{
+		return u.user_name === username && u.password === password
+	})
+
+	if (user === undefined){
+		$("#warning_message").css('visibility','visible')
+		return false
+	}
+	else{
+		$("#Login").hide()
+		$("#Login").css("visibility","hidden")
+		$("#Game").show()
+		$("#Game").css("visibility","visible")
+	}
+	return false
+}
+
+function add_user(){
+	if ($("#register_form").validate().checkForm()){
+		let user = new User($("#uname").val(),$("#fname").val(),$('#lname').val(),$('#email').val(),$('#password').val(),$('#datepicker').val())
+		users.push(user)
+		console.log(user);
+		$("#Register").hide()
+		$("#Register").css("visibility","hidden")
+		$("#Game").show()
+		$("#Game").css("visibility","visible")
+	}
+	return false
+}
 
