@@ -3,7 +3,6 @@
 
 body{
     background-color:black;
-    overflow-y: hidden;
 }
 #Welcome {
     margin: auto;
@@ -85,48 +84,56 @@ nav ul li:focus {
         text-shadow: 2px 2px aqua}
 }
 
-#register_form{
-
-}
-#register_form input{
-    display: block;
-}
-
-#register_form, #register_form p{
+#Register form, p {
     margin: 20px;
 }
 
-p.note{
+#Register p.note {
     font-size: 1rem;
-    color:red;
+    color: red;
 }
 
-
-input{
+#Register input, textarea {
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 4px;
     font-family: 'Lato';
-    width: 500px;
+    width: 300px;
     margin-top: 10px;
 }
 
-
-label {
+#Register label {
     width: 300px;
     font-weight: bold;
     display: inline-block;
     margin-top: 20px;
 }
 
-#register_form label span {
+#Register label span {
     font-size: 1rem;
 }
 
-#register_form label.error {
+#Register label.error {
     color: red;
     font-size: 1rem;
     display: block;
     margin-top: 5px;
+}
+
+#Register input.error, #Register textarea.error {
+    border: 1px dashed red;
+    font-weight: 300;
+    color: red;
+}
+
+#Register [type="submit"], #Register[type="reset"], #Register button, #Register html [type="button"] {
+    margin-left: 0;
+    border-radius: 0;
+    background: black;
+    color: white;
+    border: none;
+    font-weight: 300;
+    padding: 10px 0;
+    line-height: 1;
 }
 

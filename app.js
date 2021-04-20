@@ -11,74 +11,64 @@ let canvas;
 
  $(document).ready(function() {
  	//context = canvas.getContext("2d");
-	 $("#register_form").validate()({
-		 rules: {
-			 uname: {
-				 required: true
-			 },
-			 pass: {
-				 required: true,
-				 minLength: 6,
-				 field: {
-					 alphanumeric: true
+	 $.validator.addMethod("lettersonly", function(value, element) {
+		 return this.optional(element) || /^[a-zA-Z ]*$/.test(value);
+	 });
+	 $.validator.addMethod("lettersanddigits", function(value, element) {
+		 return this.optional(element) || /^(?=.*[A-Za-z])(?=.*\d)/.test(value);
+	 });
+	 $("#register_form").validate({
+			 rules: {
+				 uname: {
+					 required: true,
+				 },
+				 fname: {
+					 required: true,
+					 lettersonly: true
+				 },
+				 lname: {
+					 required: true,
+					 lettersonly: true
+				 },
+				 email: {
+					 required: true,
+					 email: true
+				 },
+				 password: {
+					 required: true,
+					 minlength: 6,
+					 lettersanddigits: true
+				 },
+				 datepicker: {
+					 required: true
 				 }
 			 },
-			 fname: {
-				 required: true,
-				 field: {
-					 alpha: true
+			 messages: {
+				 uname: {
+					 required: "Please enter your username"
+				 },
+				 fname: {
+					 required: "Please enter your first name",
+					 lettersonly: "First name should include letters only"
+				 },
+				 lname: {
+					 required: "Please enter your last name",
+					 lettersonly: "Last name should include letters only"
+				 },
+				 email: {
+					 required: "Please enter your email",
+					 email: "The email should be in the format: example@example.com"
+				 },
+				 password: {
+					 required: "Please enter a password",
+					 minlength: "Password should be at least 6 characters",
+					 lettersanddigits: "Password should include both letters and digits"
+				 },
+				 datepicker: {
+					 required: "Please choose your date of birth"
 				 }
-			 },
-			 lname: {
-				 required: true,
-				 field: {
-					 alpha: true
-				 }
-			 },
-			 email: {
-				 required: true,
-				 email: true
-			 },
-			 date: {
-				 required: true
 			 }
-		 },
-		 messages:{
-		 	uname:{
-				required: "Please Enter Your Username"
-			},
-			 password:{
-		 		minLength: "Password Should Be At Least 6 Characters Length",
-				 field: {
-					 alphanumeric: "Password Should Include Both Letters And Digits"
-				 }
-			 },
-			 fname: {
-				 required: "Please Enter Your First Name",
-				 field: {
-					 alpha: "This Field Should Be Letters Only"
-				 }
-			 },
-			 lname: {
-				 required: "Please Enter Your Last Name",
-				 field: {
-					 alpha: "This Field Should Be Letters Only"
-				 }
-			 },
-			 email: {
-				 required: "Please Enter Your E-Mail",
-				 email: "Your E-Mail Format Should Be example@example.com"
-			 },
-			 date:{
-		 		required:"Your Birthday Is Required"
-			 }
-
-		 }
-
-
-
-
-	 })
+		 })
 
 	 	// if ($("input:password").val.length < 6){
 		// 	alert('error')
