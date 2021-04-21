@@ -21,6 +21,12 @@
 	</head>
 
 	<body>
+	<ul id="menu">
+		<li><a class="active" href="#home">Home</a></li>
+		<li><a href="#" onclick="go_to_login()">Login</a></li>
+		<li><a href="#" onclick="go_to_reg()">Register</a></li>
+		<li style="float:right"><a href="#about">About</a></li>
+	</ul>
 	<div id="Welcome">
 		<image src="logo.gif"></image>
 		<h1 style="color: white">WELCOME 👋</h1>
@@ -84,7 +90,8 @@
 			<p id="warning_message" style="visibility: hidden;color: red;font-weight: bold ">one of the values is incorrect,try again</p>
 		</form>
 	</div>
-		<!--<div id="score">
+	<div id="Game_Area" style="visibility: hidden;color: white">
+		<div id="score">
 			<label for="lblScore">SCORE:</label>
 			<input id="lblScore" type="text" />
 		</div>
@@ -94,9 +101,7 @@
 		</div>
 		<div id="game">
 			<canvas id="canvas" height="600" width="600"></canvas>
-		</div>-->
-	<div id="Game" style="visibility: hidden;color: white">
-		Game Here
+		</div>
 	</div>
 	</body>
 </html>
