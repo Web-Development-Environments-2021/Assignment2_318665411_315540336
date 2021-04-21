@@ -1,107 +1,161 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="styl.css">
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-		<link rel="stylesheet" href="/resources/demos/style.css">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-		<script src="app.js"></script>
-		<script>
-			$( function() {
-				$( "#datepicker" ).datepicker({
-					changeMonth: true,
-					changeYear: true
-				});
-			} );
-		</script>
-	</head>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="styl.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.js"></Script>
+	<script src="app.js"></script>
+	<script>
+		$( function() {
+			$( "#datepicker" ).datepicker({
+				changeMonth: true,
+				changeYear: true
+			});
+		} );
+	</script>
+	<script>
+		$( function() {
+			$( "#slider-range-max" ).slider({
+				range: "max",
+				min: 50,
+				max: 90,
+				value: 50,
+				slide: function( event, ui ) {
+					$( "#amount" ).val( ui.value );
+				}
+			});
+			$( "#amount" ).val( $( "#slider-range-max" ).slider( "value" ) );
+		} );
+	</script>
+	<script>
+		$(function (){
+			$('.color-picker').spectrum({
+				type: "color"
+			});
+		})
+	</script>
+</head>
 
-	<body>
-	<ul id="menu">
-		<li><a class="active" href="#home">Home</a></li>
-		<li><a href="#" onclick="go_to_login()">Login</a></li>
-		<li><a href="#" onclick="go_to_reg()">Register</a></li>
-		<li style="float:right"><a href="#about">About</a></li>
-	</ul>
-	<div id="Welcome">
-		<image src="logo.gif"></image>
-		<h1 style="color: white">WELCOME 👋</h1>
-		<nav style="color: white">
-			<ul>
-				<li onclick="go_to_login()">
-					<a class = "wel" href="#" >Login</a>
-				</li>
-				<li onclick="go_to_reg()">
-					<a class="wel" id="reg" href="#">Register</a>
-				</li>
-			</ul>
-		</nav>
-		<h1><a class="wel" href="https://www.youtube.com/watch?v=pIrvpn3k9A4"> Click Here To See Pacman In Real Life</a></h1>
-	</div>
-	<div id="Register" style="visibility: hidden; color: white">
-		<form id="register_form" action="" method="post" onsubmit="return add_user()">
-			<p>
-				<label for="uname">Username <span>(required)</span></label>
-				<input type="text" id="uname" name="uname" placeholder="username">
-			</p>
-			<p>
-				<label for="fname">First Name <span>(required)</span></label>
-				<input type="text" id="fname" name="fname" placeholder="John">
-			</p>
-			<p>
-				<label for="lname">Last Name <span>(required)</span></label>
-				<input type="text" id="lname" name="lname" placeholder="Doe">
-			</p>
-			<p>
-				<label for="email">E-Mail <span>(required)</span></label>
-				<input type="email" id="email" name="email" placeholder="example@exapple.com">
-			</p>
-			<p>
-				<label for="password">Password <span>(required, at least 6 characters, digits and letters)</span></label>
-				<input type="password" id="password" name="password" placeholder="password">
-			</p>
-			<p>
-				<label for="datepicker">BirthDay <span>(required)</span> </label>
-				<input type="text" id="datepicker" name="datepicker" placeholder="choose date">
-			</p>
-			<p>
-				<input class="submit" type="submit" value="SUBMIT">
-			</p>
-		</form>
-	</div>
+<body>
+<ul id="menu">
+	<li><a class="active" href="#home">Home</a></li>
+	<li><a href="#" onclick="go_to_login()">Login</a></li>
+	<li><a href="#" onclick="go_to_reg()">Register</a></li>
+	<li style="float:right"><a href="#about">About</a></li>
+</ul>
+<div id="Welcome">
+	<image src="logo.gif"></image>
+	<h1 style="color: white">WELCOME 👋</h1>
+	<nav style="color: white">
+		<ul>
+			<li onclick="go_to_login()">
+				<a class = "wel" href="#" >Login</a>
+			</li>
+			<li onclick="go_to_reg()">
+				<a class="wel" id="reg" href="#">Register</a>
+			</li>
+		</ul>
+	</nav>
+	<h1><a class="wel" href="https://www.youtube.com/watch?v=pIrvpn3k9A4"> Click Here To See Pacman In Real Life</a></h1>
+</div>
+<div id="Register" style="visibility: hidden; color: white">
+	<form id="register_form" action="" method="post" onsubmit="return add_user()">
+		<p>
+			<label for="uname">Username <span>(required)</span></label>
+			<input type="text" id="uname" name="uname" placeholder="username">
+		</p>
+		<p>
+			<label for="fname">First Name <span>(required)</span></label>
+			<input type="text" id="fname" name="fname" placeholder="John">
+		</p>
+		<p>
+			<label for="lname">Last Name <span>(required)</span></label>
+			<input type="text" id="lname" name="lname" placeholder="Doe">
+		</p>
+		<p>
+			<label for="email">E-Mail <span>(required)</span></label>
+			<input type="email" id="email" name="email" placeholder="example@exapple.com">
+		</p>
+		<p>
+			<label for="password">Password <span>(required, at least 6 characters, digits and letters)</span></label>
+			<input type="password" id="password" name="password" placeholder="password">
+		</p>
+		<p>
+			<label for="datepicker">BirthDay <span>(required)</span> </label>
+			<input type="text" id="datepicker" name="datepicker" placeholder="choose date">
+		</p>
+		<p>
+			<input class="submit" type="submit" value="SUBMIT">
+		</p>
+	</form>
+</div>
 
-	<div id="Login" style="visibility: hidden">
-		<form id="login_form" method="post" action="" onsubmit="return validate_vals()">
-			<p>
-				<label for="username">Username</label>
-				<input type="text" id="username" name="uname" placeholder="username">
-			</p>
-			<p>
-				<label for="login_password">Password</label>
-				<input type="password" id="login_password" name="password" placeholder="password">
-			</p>
-			<p>
-				<input class="submit" type="submit" value="Login">
-			</p>
-			<p id="warning_message" style="visibility: hidden;color: red;font-weight: bold ">one of the values is incorrect,try again</p>
-		</form>
+<div id="Login" style="visibility: hidden">
+	<form id="login_form" method="post" action="" onsubmit="return validate_vals()">
+		<p>
+			<label for="username">Username</label>
+			<input type="text" id="username" name="uname" placeholder="username">
+		</p>
+		<p>
+			<label for="login_password">Password</label>
+			<input type="password" id="login_password" name="password" placeholder="password">
+		</p>
+		<p>
+			<input class="submit" type="submit" value="Login">
+		</p>
+		<p id="warning_message" style="visibility: hidden;color: red;font-weight: bold ">one of the values is incorrect,try again</p>
+	</form>
+</div>
+<div id="Game_Area" style="visibility: hidden;color: white">
+	<div id="score">
+		<label for="lblScore">SCORE:</label>
+		<input id="lblScore" type="text" />
 	</div>
-	<div id="Game_Area" style="visibility: hidden;color: white">
-		<div id="score">
-			<label for="lblScore">SCORE:</label>
-			<input id="lblScore" type="text" />
-		</div>
-		<div id="time">
-			<label for="lblTime">TIME:</label>
-			<input id="lblTime" type="text" />
-		</div>
-		<div id="game">
-			<canvas id="canvas" height="600" width="600"></canvas>
-		</div>
+	<div id="time">
+		<label for="lblTime">TIME:</label>
+		<input id="lblTime" type="text" />
 	</div>
-	</body>
+	<div id="game">
+		<canvas id="canvas" height="600" width="600"></canvas>
+	</div>
+</div>
+<div id="settings" style="visibility: hidden">
+	<form class="modal-content">
+		<p>
+			<label for="upkey">choose you up key</label>
+			<select id="upkey">upkey</select>
+			<label for="downkey">choose you up key</label>
+			<select id="downkey">upkey</select>
+			<label for="rightkey">choose you up key</label>
+			<select id="rightkey">upkey</select>
+			<label for="leftkey">choose you up key</label>
+			<select id="leftkey">upkey</select>
+		</p>
+		<p>
+			<label for="amount">Number of balls:</label>
+			<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+		</p>
+		<div id="slider-range-max"></div>
+		<p>
+			<label for="ball1">Color for 5 points ball</label>
+			<input id="ball1" class="color-picker" value='#276cb8' >
+			<label for="ball2">Color for 15 points ball</label>
+			<input id="ball2" class="color-picker" value='#276cb8' >
+			<label for="ball3">Color for 25 points ball</label>
+			<input id="ball3" class="color-picker" value='#276cb8' >
+		</p>
+		<p>
+			<input type="button" value="Random">
+			<input type="button" value="Start">
+		</p>
+	</form>
+</div>
+</body>
 </html>
