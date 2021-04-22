@@ -263,18 +263,14 @@ function UpdatePosition() {
 
 function go_to_reg(){
 	$("body").css("background-color","rgb(30,30,40)")
-	$("#Welcome").hide()
-	$("#Welcome").css("visibility","hidden")
-	$("#Register").show()
-	$("#Register").css("visibility","visible")
+	$("#Welcome").css("display","none")
+	$("#Register").css("display","block")
 }
 
 function go_to_login(){
 	$("body").css("background-color","rgb(30,30,40)")
-	$("#Welcome").hide()
-	$("#Welcome").css("visibility","hidden")
-	$("#Login").show()
-	$("#Login").css("visibility","visible")
+	$("#Welcome").css("display","none")
+	$("#Login").css("display","block")
 }
 
 function validate_vals(){
