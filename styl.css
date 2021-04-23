@@ -60,63 +60,57 @@ li a:hover:not(.active) {
 }
 #Welcome img{
     width: 75%;
-
 }
 
-#Welcome h1{
-    font-family: 'Original Surfer', cursive;
-    font-size: 50px;
-    text-align:center;
-    position:relative;
-    bottom:150px;
-}
-
-nav{
+table{
+    margin: auto;
     position: relative;
-    bottom: 150px;
-    left: 12vw;
-}
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-column-gap: 15px;
-}
-
-nav ul li{
-    display: inline;
-    color: blue;
+    bottom: 100px;
     text-align: center;
-    font-size: 30px;
-    font-weight: bold;
-    border: 0.2em solid blue;
-    border-radius: 0.5em;
-    text-transform: uppercase;
     font-family: 'Original Surfer', cursive;
-    letter-spacing: 0.1em;
 }
 
+table h1{
+    font-size: 50px;
+}
+
+#hello{
+    position: relative;
+}
 .wel{
     text-decoration: none;
+    font-size: 35px;
+    font-weight: bold;
+}
+.tc{
+    width: 150px;
+    border: 10px solid blue;
+    border-radius: 20px;
+
+}
+.tce{
+    width: 25px;
+}
+.tc:hover,
+.tc:focus {
+    animation: pulse 1s;
+    box-shadow: 0 0 0 0.3em rgba(0, 0, 255, 0.5);
 }
 
-
+@keyframes pulse {
+    0% {
+        box-shadow: 25px 25px;
+        text-shadow: 5px 5px aqua
+    }
+}
 a.wel:visited{
     color: blue;
 }
 
-nav ul li:hover,
-nav ul li:focus {
-    animation: pulse 1s;
-    box-shadow: 0 0 0 0.3em rgba(0,0,255,0.5);
+a.wel:active{
+    color: aqua;
 }
 
-@keyframes pulse {
-    0% { box-shadow: 5px 5px;
-        text-shadow: 2px 2px aqua}
-}
 
 .modal-content {
     background-color: #fefefe;

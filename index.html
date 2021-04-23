@@ -53,18 +53,41 @@
 </ul>
 <div id="Welcome">
 	<image src="logo.gif"></image>
-	<h1 style="color: white">WELCOME 👋</h1>
-	<nav style="color: white">
-		<ul>
-			<li onclick="go_to_login()">
+	<table>
+		<tr>
+			<td colspan="5">
+				<h1 id="hello" style="color: white">WELCOME 👋</h1>
+			</td>
+		</tr>
+		<tr>
+			<td class="tce">
+			</td>
+			<td class="tc" onclick="go_to_login()">
 				<a class = "wel" href="#" >Login</a>
-			</li>
-			<li onclick="go_to_reg()">
+			</td>
+			<td class="tce">
+			</td>
+			<td class="tc" onclick="go_to_reg()">
 				<a class="wel" id="reg" href="#">Register</a>
-			</li>
-		</ul>
-	</nav>
-	<h1><a class="wel" href="https://www.youtube.com/watch?v=pIrvpn3k9A4"> Click Here To See Pacman In Real Life</a></h1>
+			<td class="tce">
+			</td>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="5">
+				<h1><a class="wel" href="https://www.youtube.com/watch?v=pIrvpn3k9A4"> Click Here To See Pacman In Real Life</a></h1>
+			</td>
+		</tr>
+	</table>
+<!--	<nav style="color: white">-->
+<!--		<ul>-->
+<!--			<li onclick="go_to_login()">-->
+<!--				<a class = "wel" href="#" >Login</a>-->
+<!--			</li>-->
+<!--			<li onclick="go_to_reg()">-->
+<!--			</li>-->
+<!--		</ul>-->
+<!--	</nav>-->
 </div>
 <div id="Register" style="display: none; color: white">
 	<form id="register_form" action="" method="post" onsubmit="return add_user()">
