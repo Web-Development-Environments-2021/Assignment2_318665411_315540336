@@ -37,7 +37,7 @@
 	<script>
 		$(function (){
 			$('.color-picker').spectrum({
-				type: "color"
+				type: "color",
 			});
 		})
 	</script>
@@ -126,17 +126,17 @@
 		<canvas id="canvas" height="600" width="600"></canvas>
 	</div>
 </div>
-<div id="settings" style="visibility: hidden">
+<div id="settings" style="display: none">
 	<form class="modal-content">
 		<p>
-			<label for="upkey">choose you up key</label>
+			<label for="upkey">choose your up key</label>
 			<select id="upkey">upkey</select>
-			<label for="downkey">choose you up key</label>
-			<select id="downkey">upkey</select>
-			<label for="rightkey">choose you up key</label>
-			<select id="rightkey">upkey</select>
-			<label for="leftkey">choose you up key</label>
-			<select id="leftkey">upkey</select>
+			<label for="downkey">choose your down key</label>
+			<select id="downkey">downkey</select>
+			<label for="rightkey">choose your right key</label>
+			<select id="rightkey">right</select>
+			<label for="leftkey">choose your left key</label>
+			<select id="leftkey">leftkey</select>
 		</p>
 		<p>
 			<label for="amount">Number of balls:</label>
@@ -152,7 +152,7 @@
 			<input id="ball3" class="color-picker" value='#276cb8' >
 		</p>
 		<p>
-			<input type="button" value="Random">
+			<input type="button" value="Random" onclick="set_settings()">
 			<input type="button" value="Start">
 		</p>
 	</form>

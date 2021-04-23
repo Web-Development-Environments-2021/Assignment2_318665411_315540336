@@ -8,9 +8,9 @@ let time_elapsed;
 let interval;
 let users = []
 let options=['1','2','3','4','5','6','7','8','9','0','a','b','c',
-		'd','c','d','e','f','g','h','i','j','k','l','m','n',
-		'o','p','q','s','t','u','v','w','x','y','z','Arrowup',
-		'Arrowdown','Arrowleft','Arrowright' ]
+			'd','c','d','e','f','g','h','i','j','k','l','m','n',
+			'o','p','q','s','t','u','v','w','x','y','z','Arrowup',
+			'Arrowdown','Arrowleft','Arrowright' ]
 
 
 class User{
@@ -285,11 +285,9 @@ function validate_vals(){
 		return false
 	}
 	else{
-		$("#Login").hide()
-		$("#Login").css("visibility","hidden")
-		$("#settings").show()
+		$("#Login").css("display","none")
 		$("body").css("background-color","white")
-		$("#settings").css("visibility","visible")
+		$("#settings").css("display","block")
 	}
 	return false
 }
@@ -299,12 +297,9 @@ function add_user(){
 		let user = new User($("#uname").val(),$("#fname").val(),$('#lname').val(),$('#email').val(),$('#password').val(),$('#datepicker').val())
 		users.push(user)
 		console.log(user);
-		$("#Register").hide()
-		$("#Register").css("visibility","hidden")
-		$("#Game_Area").show()
-		$("body").css("background-color","white")
-		$("body").css("color","black")
-		$("#Game_Area").css("visibility","visible")
+		$("#Register").css("display","none")
+		$("body").css("background-color","black")
+		$("#Welcome").css("display","block")
 	}
 	return false
 }
@@ -333,4 +328,28 @@ function load_key_options(){
 		right.appendChild(opt3);
 		left.appendChild(opt4);
 	})
+}
+
+function set_settings(){
+	$('#upkey').val("37")
+	$('#downkey').val("38")
+	$('#rightkey').val("39")
+	$('#leftkey').val("40")
+	let min = $( "#slider-range-max" ).slider("option","min")
+	let max = $( "#slider-range-max" ).slider("option","max")
+	let val = min + Math.floor(Math.random()*(max-min))
+	$( "#slider-range-max" ).slider('value',val)
+	$('#amount').val(val)
+	$("#ball1").spectrum({
+		type:'color',
+		color: '#' + Math.floor(Math.random()*16777215).toString(16)
+	});
+	$("#ball2").spectrum({
+		type:'color',
+		color: '#' + Math.floor(Math.random()*16777215).toString(16)
+	});
+	$("#ball3").spectrum({
+		type:'color',
+		color: '#' + Math.floor(Math.random()*16777215).toString(16)
+	});
 }
