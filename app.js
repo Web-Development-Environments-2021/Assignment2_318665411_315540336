@@ -269,17 +269,17 @@ function UpdatePosition() {
 }
 
 function go_to_reg(){
-	$("div").css("display","none")
+	$(".content").css("display","none")
 	$("#Register").css("display","block")
 }
 
 function go_to_login(){
-	$("div").css("display","none")
+	$(".content").css("display","none")
 	$("#Login").css("display","block")
 }
 
 function go_to_home(){
-	$("div").css("display","none")
+	$(".content").css("display","none")
 	$("#Welcome").css("display","block")
 }
 
@@ -296,7 +296,6 @@ function validate_vals(){
 	}
 	else{
 		$("#Login").css("display","none")
-		$("body").css("background-color","white")
 		$("#settings").css("display","block")
 	}
 	return false
@@ -361,4 +360,6 @@ function set_settings(){
 		type:'color',
 		color: '#' + Math.floor(Math.random()*16777215).toString(16)
 	});
+	$('#monsters').val(Math.floor(Math.random()*4)+1)
+	$('#spinner').val(Math.floor(Math.random()*1000)+60)
 }

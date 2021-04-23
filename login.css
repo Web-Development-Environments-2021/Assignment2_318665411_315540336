@@ -1,6 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Yanone+Kaffeesatz:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Original+Surfer&display=swap');
 
-#Register{
+
+body{
+    background-color:black;
+}
+
+
+#Login{
     margin: 0 auto;
     font-family: 'Lato';
     font-weight: 300;
@@ -12,19 +18,9 @@
     width:100%;
 }
 
-h2{
-    font-weight: bold;
-    letter-spacing: .025em;
-    font-weight: bold;
-    z-index: 100;
-    color: blue;
-    text-align: center;
-}
-
-
-#Register p label{
+#Login p label{
     pointer-events: none;
-    font-size: 23px;
+    font-size: 0.85em;
     top: 40%;
     left: 0;
     transform: translateY(-50%);
@@ -32,12 +28,7 @@ h2{
     font-family: 'Yanone Kaffeesatz', sans-serif;
 }
 
-#Register p{
-    margin: 20px;
-    margin-left: 80px;
-}
-
-#Register form{
+#Login form{
     max-width: 650px;
     width: 700px;
     border-style: solid;
@@ -47,47 +38,59 @@ h2{
     top:50%;
     left:60vmin;
 }
-
-
-
-#Register p.note{
-    font-size: 1rem;
-    color: red;
+#Login p{
+    margin: 20px;
+    margin-left: 80px;
 }
 
-#Register input[type="password"],input[type="email"],input[type="text"] ,textarea{
+#login p.note{
+   font-size: 1rem;
+   color: red;
+}
+#Login #login_form #parmeters input{
+         width: 43%;
+    font-size: 20px;
+ 
+}
+
+#Login input,textarea {
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 4px;
-    width: 40%;
-    font-size: 20px;
+    font-family: 'Lato';
+    width: 150px;
     margin-top: 10px;
     font-family: 'Yanone Kaffeesatz', sans-serif;
 
+
+
 }
 
-#Register p label{
-    width: 300px;
+#Login p label{
+    width: 200px;
     font-weight: bold;
     display: inline-block;
     margin-top: 20px;
+    color: white;
+    font-size:22px;
 }
 
 
-#Register label.error{
+
+#Login label.error{
     color: red;
     font-size: 1rem;
     display: block;
     margin-top: 5px;
 }
 
-#Register input.error, #Register textarea.error {
+#Login input.error, #Login textarea.error {
     border: 1px dashed red;
     font-weight: 300;
     color: red;
 }
 
-#Register [type="submit"], #Register[type="reset"], #Register button, #Register html [type="button"]{
+#Login [type="submit"],#Login[type="reset"],#Login button,#Login html [type="button"]{
     margin-left: 0px;
     background: yellow;
     color: blue;
@@ -103,9 +106,9 @@ h2{
     cursor: pointer;
     outline: none;
     box-shadow: 0 9px #999;
-
+    margin-right: 220px;
+    
 }
-
 .submit:hover{
     background-color: #3e8e41
 }
@@ -115,3 +118,28 @@ h2{
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
+img.avatar {
+  width: 50%;
+    margin-left:145px;
+   
+}
+
+@media screen and (max-width: 1400px) {
+   #Login{
+    margin: 0 auto;
+    font-family: 'Lato';
+    font-weight: 300;
+    font-size: 1.25rem;
+    padding: 10px;
+    position: relative;
+    top: 2vh;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    width:100%;
+}
+    #Login form{
+        height: 500px;
+    } 
+
+}
+
+
