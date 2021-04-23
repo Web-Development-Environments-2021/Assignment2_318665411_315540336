@@ -3,6 +3,7 @@
 
 body{
     background-color:black;
+    overflow-x: hidden;
 }
 
 
@@ -13,6 +14,7 @@ body{
     padding: 0;
     overflow: hidden;
     background-color: #333;
+    width: 100%;
 }
 
 #menu li {
@@ -43,19 +45,6 @@ li a:hover:not(.active) {
     margin: auto;
     width: 50%;
     padding: 10px;
-}
-
-
-#Register{
-    margin: 20px 0;
-    font-family: 'Lato';
-    font-weight: 300;
-    font-size: 1.25rem;
-    width: 50%;
-    padding: 10px;
-    position: relative;
-    top: 7.5vh;
-    left: 32.5vw;
 }
 
 #Login{
@@ -127,60 +116,6 @@ nav ul li:focus {
 @keyframes pulse {
     0% { box-shadow: 5px 5px;
         text-shadow: 2px 2px aqua}
-}
-
-#Register form, p ,#Login form,p{
-    margin: 20px;
-}
-
-#Register p.note, #login p.note{
-    font-size: 1rem;
-    color: red;
-}
-
-#Register input, textarea #Login input,textarea {
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    padding: 4px;
-    font-family: 'Lato';
-    width: 300px;
-    margin-top: 10px;
-}
-
-#Register label ,#Login label{
-    width: 300px;
-    font-weight: bold;
-    display: inline-block;
-    margin-top: 20px;
-}
-
-#Register label span {
-    font-size: 1rem;
-}
-
-#Register label.error ,#Login label.error{
-    color: red;
-    font-size: 1rem;
-    display: block;
-    margin-top: 5px;
-}
-
-#Register input.error, #Register textarea.error,#Login input.error, #Login textarea.error {
-    border: 1px dashed red;
-    font-weight: 300;
-    color: red;
-}
-
-#Register [type="submit"], #Register[type="reset"], #Register button, #Register html [type="button"]
-#Login [type="submit"],#Login[type="reset"],#Login button,#Login html [type="button"]{
-    margin-left: 0;
-    border-radius: 0;
-    background: black;
-    color: white;
-    border: none;
-    font-weight: 300;
-    padding: 10px 0;
-    line-height: 1;
 }
 
 .modal-content {

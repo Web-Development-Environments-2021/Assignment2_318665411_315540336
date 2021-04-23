@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Yanone+Kaffeesatz:wght@300&display=swap');
+
+#Register{
+    margin: 0 auto;
+    font-family: 'Lato';
+    font-weight: 300;
+    font-size: 1.25rem;
+    padding: 10px;
+    position: relative;
+    top: 10vh;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    width:100%;
+}
+
+h2{
+    font-weight: bold;
+    letter-spacing: .025em;
+    font-weight: bold;
+    z-index: 100;
+    color: blue;
+    text-align: center;
+}
+
+
+#Register p label{
+    pointer-events: none;
+    font-size: 0.85em;
+    top: 40%;
+    left: 0;
+    transform: translateY(-50%);
+    transition: all ease-in 0.25s;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+
+#Register p{
+    margin: 20px;
+    margin-left: 80px;
+}
+
+#Register form{
+    max-width: 650px;
+    width: 700px;
+    border-style: solid;
+    border-color: blue;
+    border-radius: 25px;
+    position: absolute;
+    top:50%;
+    left:60vmin;
+}
+
+
+
+#Register p.note{
+    font-size: 1rem;
+    color: red;
+}
+
+#Register input, textarea{
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 4px;
+    font-family: 'Lato';
+    width: 150px;
+    margin-top: 10px;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+
+}
+
+#Register p label{
+    width: 300px;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+#Register label span {
+    font-size: 1rem;
+}
+
+#Register label.error{
+    color: red;
+    font-size: 1rem;
+    display: block;
+    margin-top: 5px;
+}
+
+#Register input.error, #Register textarea.error {
+    border: 1px dashed red;
+    font-weight: 300;
+    color: red;
+}
+
+#Register [type="submit"], #Register[type="reset"], #Register button, #Register html [type="button"]{
+    margin-left: 0px;
+    background: yellow;
+    color: blue;
+    border: none;
+    padding: 12px 28px;
+    line-height: 1;
+    border-radius: 20px;
+    font-family: monospace;
+    margin: 0 auto;
+    display: block;
+    font-weight: bold;
+    font-size:26px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 9px #999;
+
+}
+
+.submit:hover{
+    background-color: #3e8e41
+}
+
+.submit:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}

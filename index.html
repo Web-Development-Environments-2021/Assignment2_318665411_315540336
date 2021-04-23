@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="styl.css">
+	<link rel="stylesheet" href="reg.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="/resources/demos/style.css">
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.css">
@@ -45,7 +46,7 @@
 
 <body>
 <ul id="menu">
-	<li><a class="active" href="#home">Home</a></li>
+	<li><a class="active" onclick="go_to_home()">Home</a></li>
 	<li><a href="#" onclick="go_to_login()">Login</a></li>
 	<li><a href="#" onclick="go_to_reg()">Register</a></li>
 	<li style="float:right"><a href="#about">About</a></li>
@@ -67,6 +68,7 @@
 </div>
 <div id="Register" style="display: none; color: white">
 	<form id="register_form" action="" method="post" onsubmit="return add_user()">
+		<h2>Sign in</h2>
 		<p>
 			<label for="uname">Username <span>(required)</span></label>
 			<input type="text" id="uname" name="uname" placeholder="username">
@@ -142,7 +144,7 @@
 			<label for="amount">Number of balls:</label>
 			<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
 		</p>
-		<div id="slider-range-max"></div>
+		<p id="slider-range-max"></p>
 		<p>
 			<label for="ball1">Color for 5 points ball</label>
 			<input id="ball1" class="color-picker" value='#276cb8' >

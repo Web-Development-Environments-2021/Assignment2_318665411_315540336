@@ -34,10 +34,16 @@ $(document).ready(function() {
 	$.validator.addMethod("lettersanddigits", function(value, element) {
 		return this.optional(element) || /^(?=.*[A-Za-z])(?=.*\d)/.test(value);
 	});
+	$.validator.addMethod("unique_username", function(value, element) {
+		return this.optional(element) || users.find((user)=>{
+			return user.user_name === value
+		}) === undefined;
+	});
 	$("#register_form").validate({
 		rules: {
 			uname: {
 				required: true,
+				unique_username: true
 			},
 			fname: {
 				required: true,
@@ -62,7 +68,8 @@ $(document).ready(function() {
 		},
 		messages: {
 			uname: {
-				required: "Please enter your username"
+				required: "Please enter your username",
+				unique_username: 'username in use'
 			},
 			fname: {
 				required: "Please enter your first name",
@@ -262,15 +269,18 @@ function UpdatePosition() {
 }
 
 function go_to_reg(){
-	$("body").css("background-color","rgb(30,30,40)")
-	$("#Welcome").css("display","none")
+	$("div").css("display","none")
 	$("#Register").css("display","block")
 }
 
 function go_to_login(){
-	$("body").css("background-color","rgb(30,30,40)")
-	$("#Welcome").css("display","none")
+	$("div").css("display","none")
 	$("#Login").css("display","block")
+}
+
+function go_to_home(){
+	$("div").css("display","none")
+	$("#Welcome").css("display","block")
 }
 
 function validate_vals(){
@@ -298,7 +308,6 @@ function add_user(){
 		users.push(user)
 		console.log(user);
 		$("#Register").css("display","none")
-		$("body").css("background-color","black")
 		$("#Welcome").css("display","block")
 	}
 	return false
