@@ -42,6 +42,22 @@ let ball_numbers
 let small_color
 let medium_color
 let big_color
+let monster_number
+const img1 = new Image(40,40)
+img1.src = 'inky.gif'
+const img2 = new Image(40,40)
+img2.src = 'blinky.gif'
+const img3 = new Image(40,40)
+img3.src = 'pinky.gif'
+const img4 = new Image(40,40)
+img4.src = 'clyde.gif'
+const images = [img1, img2, img3, img4]
+let inky
+let blinky
+let pinky
+let clyde
+let monster_move = 1
+
 
 class User{
 	constructor(user_name,first_name,last_name,email,password,birthday) {
@@ -154,6 +170,43 @@ function Start() {
 	shape.i = emptyCell[0]
 	shape.j = emptyCell[1]
 	board[emptyCell[0]][emptyCell[1]]=5
+	for(let i = 0; i < monster_number;i++){
+		switch (i){
+			case 0:
+				inky = {
+					last: board[1][1],
+					x : 1,
+					y : 1
+				}
+				board[1][1]=6
+				break
+			case 1:
+				blinky = {
+					last: board[1][13],
+					x : 1,
+					y : 13
+				}
+				board[1][13]=6
+				break
+			case 2:
+				pinky = {
+					last: board[13][1],
+					x : 13,
+					y : 1
+				}
+				board[13][1]=6
+				break
+			case 3:
+				board[13][13]=6
+				clyde = {
+					last: board[13][13],
+					x : 13,
+					y : 13
+				}
+				board[13][1]=6
+				break
+		}
+	}
 	keysDown = {};
 	addEventListener(
 		"keydown",
@@ -201,6 +254,7 @@ function Draw(start,end,dir,x_eye,y_eye) {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
+	let monst = 0;
 	for (let i = 0; i < 15; i++) {
 		for (let j = 0; j < 15; j++) {
 			let center = new Object();
@@ -246,6 +300,10 @@ function Draw(start,end,dir,x_eye,y_eye) {
 				context.rect(center.x - 20, center.y - 20, 40, 40);
 				context.fillStyle = "grey"; //color
 				context.fill();
+			}
+			else if (board[i][j] == 6){
+				context.drawImage(images[monst],center.x-20,center.y-20,images[monst].width,images[monst].height)
+				monst++
 			}
 		}
 	}
@@ -294,6 +352,52 @@ function UpdatePosition() {
 			eye_y = -10
 		}
 	}
+	if (monster_move === 4){
+		for(let i = 0; i < monster_number; i++){
+			let moves
+			let chosen
+			switch (i){
+				case 0:
+					moves = allowed_moves(inky.x,inky.y)
+					chosen = shortest_path(moves)
+					board[inky.x][inky.y] = inky.last
+					inky.last = board[chosen[0]][chosen[1]]
+					inky.x = chosen[0]
+					inky.y = chosen[1]
+					board[chosen[0]][chosen[1]] = 6
+					break
+				case 1:
+					moves = allowed_moves(blinky.x,blinky.y)
+					chosen = shortest_path(moves)
+					board[blinky.x][blinky.y] = blinky.last
+					blinky.last = board[chosen[0]][chosen[1]]
+					blinky.x = chosen[0]
+					blinky.y = chosen[1]
+					board[chosen[0]][chosen[1]] = 6
+					break
+				case 2:
+					moves = allowed_moves(pinky.x,pinky.y)
+					chosen = shortest_path(moves)
+					board[pinky.x][pinky.y] = pinky.last
+					pinky.last = board[chosen[0]][chosen[1]]
+					pinky.x = chosen[0]
+					pinky.y = chosen[1]
+					board[chosen[0]][chosen[1]] = 6
+					break
+				case 3:
+					moves = allowed_moves(clyde.x,clyde.y)
+					chosen = shortest_path(moves)
+					board[clyde.x][clyde] = clyde.last
+					clyde.last = board[chosen[0]][chosen[1]]
+					clyde.x = chosen[0]
+					clyde.y = chosen[1]
+					board[chosen[0]][chosen[1]] = 6
+					break
+			}
+		}
+		monster_move = 0
+	}
+	monster_move++
 	if (board[shape.i][shape.j] === 2) {
 		score+=5;
 		ball_numbers--
@@ -338,7 +442,6 @@ function go_to_home(){
 function start_game(){
 	$(".content").css("display","none")
 	$("#Game_Area").css("display","block")
-	$('#Game_Area').css('background-color','white')
 	get_controls()
 	Start()
 }
@@ -357,6 +460,7 @@ function validate_vals(){
 	else{
 		$(".content").css("display","none")
 		$("#settings").css("display","block")
+		$('.settings_content')[0].reset()
 	}
 	return false
 }
@@ -456,4 +560,32 @@ function get_controls(){
 	small_color = $('#ball1').val()
 	medium_color = $('#ball2').val()
 	big_color = $('#ball3').val()
+	monster_number = $('#monsters').val()
+	console.log(monster_number)
+}
+
+function allowed_moves(x,y){
+	let x_move = [-1,1,0,0]
+	let y_move = [0,0,-1,1]
+	let possible_moves = []
+	for (let i = 0; i < 4; i++){
+		if (board[x+x_move[i]][y+y_move[i]] != 0 && board[x+x_move[i]][y+y_move[i]] != 6 ){
+			possible_moves.push([x+x_move[i],y+y_move[i]])
+		}
+	}
+	console.log(possible_moves)
+	return possible_moves
+}
+
+function shortest_path(moves){
+	let min_path = Number.MAX_SAFE_INTEGER
+	let move
+	for(let i = 0; i < moves.length;i++){
+		let dist = Math.abs(moves[i][0] - shape.i) + Math.abs(moves[i][1]-shape.j)
+		if (dist < min_path){
+			min_path = dist
+			move = moves[i]
+		}
+	}
+	return move
 }
