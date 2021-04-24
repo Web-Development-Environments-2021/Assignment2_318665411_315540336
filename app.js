@@ -1,6 +1,22 @@
 let context;
 let shape = new Object();
-let board;
+let board = [
+	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+	[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+	[0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0],
+	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+	[1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1],
+	[0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0],
+	[0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0],
+	[0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0],
+	[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+	[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
 let score;
 let pac_color;
 let start_time;
@@ -110,47 +126,20 @@ $(document).ready(function() {
 
 
 function Start() {
-	board = new Array();
 	score = 0;
-	pac_color = "blue";
-	let cnt = 100;
-	let food_remain = 50;
+	pac_color = "yellow";
+	let food_remain = 90;
 	let pacman_remain = 1;
 	start_time = new Date();
-	for (let i = 0; i < 10; i++) {
-		board[i] = new Array();
-		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-		for (let j = 0; j < 10; j++) {
-			if (
-				(i == 3 && j == 3) ||
-				(i == 3 && j == 4) ||
-				(i == 0 && j == 0) ||
-				(i == 6 && j == 1) ||
-				(i == 6 && j == 2)
-			) {
-				board[i][j] = 4;
-			} else {
-				let randomNum = Math.random();
-				if (randomNum <= (1.0 * food_remain) / cnt) {
-					food_remain--;
-					board[i][j] = 1;
-				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
-					shape.i = i;
-					shape.j = j;
-					pacman_remain--;
-					board[i][j] = 2;
-				} else {
-					board[i][j] = 0;
-				}
-				cnt--;
-			}
-		}
-	}
 	while (food_remain > 0) {
 		let emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = 1;
+		board[emptyCell[0]][emptyCell[1]] = 2;
 		food_remain--;
 	}
+	let emptyCell = findRandomEmptyCell(board);
+	shape.i = emptyCell[0]
+	shape.j = emptyCell[1]
+	board[emptyCell[0]][emptyCell[1]]=3
 	keysDown = {};
 	addEventListener(
 		"keydown",
@@ -170,11 +159,11 @@ function Start() {
 }
 
 function findRandomEmptyCell(board) {
-	let i = Math.floor(Math.random() * 9 + 1);
-	let j = Math.floor(Math.random() * 9 + 1);
-	while (board[i][j] != 0) {
-		i = Math.floor(Math.random() * 9 + 1);
-		j = Math.floor(Math.random() * 9 + 1);
+	let i = Math.floor(Math.random() * 14 + 1);
+	let j = Math.floor(Math.random() * 14 + 1);
+	while (board[i][j] === 0 || board[i][j] === 2) {
+		i = Math.floor(Math.random() * 14 + 1);
+		j = Math.floor(Math.random() * 14 + 1);
 	}
 	return [i, j];
 }
@@ -198,29 +187,29 @@ function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
-	for (let i = 0; i < 10; i++) {
-		for (let j = 0; j < 10; j++) {
+	for (let i = 0; i < 15; i++) {
+		for (let j = 0; j < 15; j++) {
 			let center = new Object();
-			center.x = i * 60 + 30;
-			center.y = j * 60 + 30;
-			if (board[i][j] == 2) {
+			center.y = i * 40 + 20;
+			center.x = j * 40 + 20;
+			if (board[i][j] == 3) {
 				context.beginPath();
-				context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+				context.arc(center.x, center.y, 20, 0.1 * Math.PI, 1.85 * Math.PI); // half circle
 				context.lineTo(center.x, center.y);
 				context.fillStyle = pac_color; //color
 				context.fill();
 				context.beginPath();
-				context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
+				context.arc(center.x + 10/3, center.y - 10/3, 10/3, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
-			} else if (board[i][j] == 1) {
+			} else if (board[i][j] == 2) {
 				context.beginPath();
-				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-				context.fillStyle = "black"; //color
+				context.arc(center.x, center.y, 10, 0, 2 * Math.PI); // circle
+				context.fillStyle = "red"; //color
 				context.fill();
-			} else if (board[i][j] == 4) {
+			} else if (board[i][j] == 0) {
 				context.beginPath();
-				context.rect(center.x - 30, center.y - 30, 60, 60);
+				context.rect(center.x - 20, center.y - 20, 40, 40);
 				context.fillStyle = "grey"; //color
 				context.fill();
 			}
@@ -229,32 +218,32 @@ function Draw() {
 }
 
 function UpdatePosition() {
-	board[shape.i][shape.j] = 0;
-	var x = GetKeyPressed();
+	board[shape.i][shape.j] = 1;
+	let x = GetKeyPressed();
 	if (x == 1) {
-		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
-			shape.j--;
-		}
-	}
-	if (x == 2) {
-		if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
-			shape.j++;
-		}
-	}
-	if (x == 3) {
-		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
+		if (shape.j > 0 && board[shape.i-1][shape.j] != 0) {
 			shape.i--;
 		}
 	}
-	if (x == 4) {
-		if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
+	if (x == 2) {
+		if (shape.j < 15 && board[shape.i+1][shape.j] != 0) {
 			shape.i++;
 		}
 	}
-	if (board[shape.i][shape.j] == 1) {
+	if (x == 3) {
+		if (shape.i > 0 && board[shape.i][shape.j-1] != 0) {
+			shape.j--;
+		}
+	}
+	if (x == 4) {
+		if (shape.i < 15 && board[shape.i][shape.j+1] != 0) {
+			shape.j++;
+		}
+	}
+	if (board[shape.i][shape.j] === 2) {
 		score++;
 	}
-	board[shape.i][shape.j] = 2;
+	board[shape.i][shape.j] = 3;
 	let currentTime = new Date();
 	time_elapsed = (currentTime - start_time) / 1000;
 	if (score >= 20 && time_elapsed <= 10) {
