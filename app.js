@@ -29,6 +29,20 @@ let options=['1','2','3','4','5','6','7','8','9','0','a','b','c',
 			'Arrowdown','Arrowleft','Arrowright' ]
 
 
+let up_code
+let down_code
+let right_code
+let left_code
+let start = 0.1
+let end = 1.85
+let dir = false
+let eye_x = 3
+let eye_y = -10
+let ball_numbers
+let small_color
+let medium_color
+let big_color
+
 class User{
 	constructor(user_name,first_name,last_name,email,password,birthday) {
 		this.user_name = user_name
@@ -121,25 +135,25 @@ $(document).ready(function() {
 		}
 	})
 	load_key_options()
-	Start();
 });
 
 
 function Start() {
 	score = 0;
 	pac_color = "yellow";
-	let food_remain = 90;
+	let food_remain = ball_numbers;
 	let pacman_remain = 1;
 	start_time = new Date();
 	while (food_remain > 0) {
+		let distribution = [2,2,2,2,2,2,3,3,3,4]
 		let emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = 2;
+		board[emptyCell[0]][emptyCell[1]] = distribution[Math.floor(Math.random()*distribution.length)];
 		food_remain--;
 	}
 	let emptyCell = findRandomEmptyCell(board);
 	shape.i = emptyCell[0]
 	shape.j = emptyCell[1]
-	board[emptyCell[0]][emptyCell[1]]=3
+	board[emptyCell[0]][emptyCell[1]]=5
 	keysDown = {};
 	addEventListener(
 		"keydown",
@@ -161,7 +175,7 @@ function Start() {
 function findRandomEmptyCell(board) {
 	let i = Math.floor(Math.random() * 14 + 1);
 	let j = Math.floor(Math.random() * 14 + 1);
-	while (board[i][j] === 0 || board[i][j] === 2) {
+	while (board[i][j] === 0 || (board[i][j] >= 2 && board[i][j] <= 4)) {
 		i = Math.floor(Math.random() * 14 + 1);
 		j = Math.floor(Math.random() * 14 + 1);
 	}
@@ -169,21 +183,21 @@ function findRandomEmptyCell(board) {
 }
 
 function GetKeyPressed() {
-	if (keysDown[38]) {
+	if (keysDown[up_code]) {
 		return 1;
 	}
-	if (keysDown[40]) {
+	if (keysDown[down_code]) {
 		return 2;
 	}
-	if (keysDown[37]) {
+	if (keysDown[left_code]) {
 		return 3;
 	}
-	if (keysDown[39]) {
+	if (keysDown[right_code]) {
 		return 4;
 	}
 }
 
-function Draw() {
+function Draw(start,end,dir,x_eye,y_eye) {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
@@ -192,21 +206,41 @@ function Draw() {
 			let center = new Object();
 			center.y = i * 40 + 20;
 			center.x = j * 40 + 20;
-			if (board[i][j] == 3) {
+			if (board[i][j] == 5) {
 				context.beginPath();
-				context.arc(center.x, center.y, 20, 0.1 * Math.PI, 1.85 * Math.PI); // half circle
+				context.arc(center.x, center.y, 20, start * Math.PI, end * Math.PI,dir); // half circle
 				context.lineTo(center.x, center.y);
+				context.closePath()
 				context.fillStyle = pac_color; //color
 				context.fill();
 				context.beginPath();
-				context.arc(center.x + 10/3, center.y - 10/3, 10/3, 0, 2 * Math.PI); // circle
+				context.arc(center.x + x_eye, center.y + y_eye, 3, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
 			} else if (board[i][j] == 2) {
 				context.beginPath();
-				context.arc(center.x, center.y, 10, 0, 2 * Math.PI); // circle
-				context.fillStyle = "red"; //color
+				context.arc(center.x, center.y, 8, 0, 2 * Math.PI); // circle
+				context.fillStyle = small_color; //color
 				context.fill();
+				context.beginPath();
+				context.fillStyle = "black";
+				context.fillText("5", center.x-3, center.y+4);
+			} else if (board[i][j] == 3) {
+				context.beginPath();
+				context.arc(center.x, center.y, 11, 0, 2 * Math.PI); // circle
+				context.fillStyle = medium_color; //color
+				context.fill();
+				context.beginPath();
+				context.fillStyle = "black";
+				context.fillText("15", center.x-5, center.y+4);
+			} else if (board[i][j] == 4) {
+				context.beginPath();
+				context.arc(center.x, center.y, 13, 0, 2 * Math.PI); // circle
+				context.fillStyle = big_color; //color
+				context.fill();
+				context.beginPath();
+				context.fillStyle = "black";
+				context.fillText("25", center.x-5, center.y+5);
 			} else if (board[i][j] == 0) {
 				context.beginPath();
 				context.rect(center.x - 20, center.y - 20, 40, 40);
@@ -223,37 +257,66 @@ function UpdatePosition() {
 	if (x == 1) {
 		if (shape.j > 0 && board[shape.i-1][shape.j] != 0) {
 			shape.i--;
+			start = 1.6
+			end = 1.35
+			dir = false
+			eye_x = -10
+			eye_y = 3
 		}
 	}
 	if (x == 2) {
 		if (shape.j < 15 && board[shape.i+1][shape.j] != 0) {
 			shape.i++;
+			start = 0.4
+			end = 0.65
+			dir = true
+			eye_x = -10
+			eye_y = 3
 		}
 	}
 	if (x == 3) {
 		if (shape.i > 0 && board[shape.i][shape.j-1] != 0) {
 			shape.j--;
+			start = 0.9
+			end = 1.15
+			dir = true
+			eye_x = 3
+			eye_y = -10
 		}
 	}
 	if (x == 4) {
 		if (shape.i < 15 && board[shape.i][shape.j+1] != 0) {
 			shape.j++;
+			start = 0.1
+			end = 1.85
+			dir = false
+			eye_x = 3
+			eye_y = -10
 		}
 	}
 	if (board[shape.i][shape.j] === 2) {
-		score++;
+		score+=5;
+		ball_numbers--
 	}
-	board[shape.i][shape.j] = 3;
-	let currentTime = new Date();
-	time_elapsed = (currentTime - start_time) / 1000;
-	if (score >= 20 && time_elapsed <= 10) {
-		pac_color = "green";
+	if (board[shape.i][shape.j] === 3) {
+		score+=15;
+		ball_numbers--
 	}
-	if (score == 50) {
+	if (board[shape.i][shape.j] === 4) {
+		score+=25;
+		ball_numbers--
+	}
+	board[shape.i][shape.j] = 5;
+	time_elapsed = time_elapsed-0.1;
+	if (time_elapsed <= 0){
+		window.clearInterval(interval);
+		window.alert("Times Up!");
+	}
+	if (ball_numbers == 0) {
 		window.clearInterval(interval);
 		window.alert("Game completed");
 	} else {
-		Draw();
+		Draw(start,end,dir,eye_x,eye_y);
 	}
 }
 
@@ -276,6 +339,8 @@ function start_game(){
 	$(".content").css("display","none")
 	$("#Game_Area").css("display","block")
 	$('#Game_Area').css('background-color','white')
+	get_controls()
+	Start()
 }
 
 function validate_vals(){
@@ -359,3 +424,36 @@ function set_settings(){
 	$('#spinner').val(Math.floor(Math.random()*1000)+60)
 }
 
+function get_controls(){
+	let up = options[$('#upkey').val()]
+	if (up === 'Arrowup')
+		up_code = 38
+	else{
+		up_code = up.toUpperCase().charCodeAt(0)
+	}
+	let down = options[$('#downkey').val()]
+	if (down === 'Arrowdown')
+		down_code = 40
+	else{
+		down_code = down.toUpperCase().charCodeAt(0)
+	}
+	let right = options[$('#rightkey').val()]
+	if (right === 'Arrowright')
+		right_code = 39
+	else{
+		right_code = right.toUpperCase().charCodeAt(0)
+	}
+	let left = options[$('#leftkey').val()]
+	if (left === 'Arrowleft')
+		left_code = 37
+	else{
+		left_code = left.toUpperCase().charCodeAt(0)
+	}
+	time_elapsed = $('#spinner').val()
+	$('#lblTime').val(time_elapsed)
+	ball_numbers = $('#amount').val()
+	console.log(ball_numbers)
+	small_color = $('#ball1').val()
+	medium_color = $('#ball2').val()
+	big_color = $('#ball3').val()
+}
