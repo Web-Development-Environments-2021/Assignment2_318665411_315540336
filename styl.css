@@ -99,12 +99,42 @@ a.wel:active{
 }
 
 
-.modal-content {
+.settings_content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 7% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+
+}
+.settings_content [type="button"]{
+    background: yellow;
+    color: blue;
+    padding: 10px 20px;
+    line-height: 1;
+
+    font-family: monospace;
+    margin: 0 auto;
+    font-weight: bold;
+    font-size:15px;
+    margin-right: 10px;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 5px #999;
+}
+
+.settings_content [type="button"]:hover{
+    background-color:dodgerblue;
+}
+.settings_content [type="button"]:active{
+    background-color:dodgerblue;
+    background-color: orangered;
+    box-shadow: 0 3px #666;
+    transform: translateY(8px);
 }
 
 

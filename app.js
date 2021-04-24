@@ -283,6 +283,12 @@ function go_to_home(){
 	$("#Welcome").css("display","block")
 }
 
+function start_game(){
+	$(".content").css("display","none")
+	$("#Game_Area").css("display","block")
+	$('#Game_Area').css('background-color','white')
+}
+
 function validate_vals(){
 	let username = $('#username').val()
 	let password = $('#login_password').val()
@@ -295,7 +301,7 @@ function validate_vals(){
 		return false
 	}
 	else{
-		$("#Login").css("display","none")
+		$(".content").css("display","none")
 		$("#settings").css("display","block")
 	}
 	return false
@@ -306,7 +312,7 @@ function add_user(){
 		let user = new User($("#uname").val(),$("#fname").val(),$('#lname').val(),$('#email').val(),$('#password').val(),$('#datepicker').val())
 		users.push(user)
 		console.log(user);
-		$("#Register").css("display","none")
+		$(".content").css("display","none")
 		$("#Welcome").css("display","block")
 	}
 	return false
@@ -363,3 +369,4 @@ function set_settings(){
 	$('#monsters').val(Math.floor(Math.random()*4)+1)
 	$('#spinner').val(Math.floor(Math.random()*1000)+60)
 }
+
