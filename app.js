@@ -43,21 +43,11 @@ let small_color
 let medium_color
 let big_color
 let monster_number
-const img1 = new Image(40,40)
-img1.src = 'inky.gif'
-const img2 = new Image(40,40)
-img2.src = 'blinky.gif'
-const img3 = new Image(40,40)
-img3.src = 'pinky.gif'
-const img4 = new Image(40,40)
-img4.src = 'clyde.gif'
-const images = [img1, img2, img3, img4]
-let inky
-let blinky
-let pinky
-let clyde
+let mySound
+const urls = [[1,1,'inky.gif'], [1,13,'blinky.gif'], [13,1,'pinky.gif'], [13,13,'clyde.gif']]
 let monster_move = 1
-
+let monsters = []
+let life = 5
 
 class User{
 	constructor(user_name,first_name,last_name,email,password,birthday) {
@@ -67,6 +57,16 @@ class User{
 		this.email = email
 		this.password = password
 		this.birthday = birthday
+	}
+}
+
+class Monster{
+	constructor(x_coor,y_coor,last_cell,url) {
+		this.img = new Image(40,40)
+		this.img.src = url
+		this.last_c = last_cell
+		this.x = x_coor
+		this.y = y_coor
 	}
 }
 
@@ -166,46 +166,11 @@ function Start() {
 		board[emptyCell[0]][emptyCell[1]] = distribution[Math.floor(Math.random()*distribution.length)];
 		food_remain--;
 	}
-	let emptyCell = findRandomEmptyCell(board);
-	shape.i = emptyCell[0]
-	shape.j = emptyCell[1]
-	board[emptyCell[0]][emptyCell[1]]=5
+	locate_pacman()
 	for(let i = 0; i < monster_number;i++){
-		switch (i){
-			case 0:
-				inky = {
-					last: board[1][1],
-					x : 1,
-					y : 1
-				}
-				board[1][1]=6
-				break
-			case 1:
-				blinky = {
-					last: board[1][13],
-					x : 1,
-					y : 13
-				}
-				board[1][13]=6
-				break
-			case 2:
-				pinky = {
-					last: board[13][1],
-					x : 13,
-					y : 1
-				}
-				board[13][1]=6
-				break
-			case 3:
-				board[13][13]=6
-				clyde = {
-					last: board[13][13],
-					x : 13,
-					y : 13
-				}
-				board[13][1]=6
-				break
-		}
+		let mon = new Monster(urls[i][0],urls[i][1],board[urls[i][0]][urls[i][1]],urls[i][2])
+		board[urls[i][0]][urls[i][1]] = 6
+		monsters.push(mon)
 	}
 	keysDown = {};
 	addEventListener(
@@ -222,6 +187,8 @@ function Start() {
 		},
 		false
 	);
+	// mySound = new Audio('among.mpeg')
+	// mySound.start()
 	interval = setInterval(UpdatePosition, 100);
 }
 
@@ -302,7 +269,10 @@ function Draw(start,end,dir,x_eye,y_eye) {
 				context.fill();
 			}
 			else if (board[i][j] == 6){
-				context.drawImage(images[monst],center.x-20,center.y-20,images[monst].width,images[monst].height)
+				let m = monsters.find((elem)=>{
+					return elem.x === i && elem.y === j
+				})
+				context.drawImage(m.img,center.x-20,center.y-20,m.img.width,m.img.height)
 				monst++
 			}
 		}
@@ -354,45 +324,19 @@ function UpdatePosition() {
 	}
 	if (monster_move === 4){
 		for(let i = 0; i < monster_number; i++){
-			let moves
-			let chosen
-			switch (i){
-				case 0:
-					moves = allowed_moves(inky.x,inky.y)
-					chosen = shortest_path(moves)
-					board[inky.x][inky.y] = inky.last
-					inky.last = board[chosen[0]][chosen[1]]
-					inky.x = chosen[0]
-					inky.y = chosen[1]
-					board[chosen[0]][chosen[1]] = 6
-					break
-				case 1:
-					moves = allowed_moves(blinky.x,blinky.y)
-					chosen = shortest_path(moves)
-					board[blinky.x][blinky.y] = blinky.last
-					blinky.last = board[chosen[0]][chosen[1]]
-					blinky.x = chosen[0]
-					blinky.y = chosen[1]
-					board[chosen[0]][chosen[1]] = 6
-					break
-				case 2:
-					moves = allowed_moves(pinky.x,pinky.y)
-					chosen = shortest_path(moves)
-					board[pinky.x][pinky.y] = pinky.last
-					pinky.last = board[chosen[0]][chosen[1]]
-					pinky.x = chosen[0]
-					pinky.y = chosen[1]
-					board[chosen[0]][chosen[1]] = 6
-					break
-				case 3:
-					moves = allowed_moves(clyde.x,clyde.y)
-					chosen = shortest_path(moves)
-					board[clyde.x][clyde] = clyde.last
-					clyde.last = board[chosen[0]][chosen[1]]
-					clyde.x = chosen[0]
-					clyde.y = chosen[1]
-					board[chosen[0]][chosen[1]] = 6
-					break
+			let moves = allowed_moves(monsters[i].x,monsters[i].y)
+			let chosen = shortest_path(moves)
+			board[monsters[i].x][monsters[i].y] = monsters[i].last_c
+			monsters[i].last_c = board[chosen[0]][chosen[1]]
+			monsters[i].x = chosen[0]
+			monsters[i].y = chosen[1]
+			board[chosen[0]][chosen[1]] = 6
+			if (shape.i == monsters[i].x && shape.j == monsters[i].y){
+				window.alert('busted')
+				reset_monsters()
+				locate_pacman()
+				life--
+				break
 			}
 		}
 		monster_move = 0
@@ -416,7 +360,7 @@ function UpdatePosition() {
 		window.clearInterval(interval);
 		window.alert("Times Up!");
 	}
-	if (ball_numbers == 0) {
+	else if (ball_numbers == 0) {
 		window.clearInterval(interval);
 		window.alert("Game completed");
 	} else {
@@ -469,7 +413,6 @@ function add_user(){
 	if ($("#register_form").validate().checkForm()){
 		let user = new User($("#uname").val(),$("#fname").val(),$('#lname').val(),$('#email').val(),$('#password').val(),$('#datepicker').val())
 		users.push(user)
-		console.log(user);
 		$(".content").css("display","none")
 		$("#Welcome").css("display","block")
 	}
@@ -505,8 +448,8 @@ function load_key_options(){
 function set_settings(){
 	$('#upkey').val("37")
 	$('#downkey').val("38")
-	$('#rightkey').val("39")
-	$('#leftkey').val("40")
+	$('#rightkey').val("40")
+	$('#leftkey').val("39")
 	let min = $( "#slider-range-max" ).slider("option","min")
 	let max = $( "#slider-range-max" ).slider("option","max")
 	let val = min + Math.floor(Math.random()*(max-min))
@@ -556,12 +499,10 @@ function get_controls(){
 	time_elapsed = $('#spinner').val()
 	$('#lblTime').val(time_elapsed)
 	ball_numbers = $('#amount').val()
-	console.log(ball_numbers)
 	small_color = $('#ball1').val()
 	medium_color = $('#ball2').val()
 	big_color = $('#ball3').val()
 	monster_number = $('#monsters').val()
-	console.log(monster_number)
 }
 
 function allowed_moves(x,y){
@@ -573,7 +514,6 @@ function allowed_moves(x,y){
 			possible_moves.push([x+x_move[i],y+y_move[i]])
 		}
 	}
-	console.log(possible_moves)
 	return possible_moves
 }
 
@@ -588,4 +528,19 @@ function shortest_path(moves){
 		}
 	}
 	return move
+}
+
+function locate_pacman(){
+	let emptyCell = findRandomEmptyCell(board);
+	shape.i = emptyCell[0]
+	shape.j = emptyCell[1]
+	board[emptyCell[0]][emptyCell[1]]=5
+}
+
+function reset_monsters(){
+	for(let i = 0; i < monster_number; i++ ){
+		monsters[i].x = urls[i][0]
+		monsters[i].y = urls[i][1]
+		board[urls[i][0]][urls[i][1]] = 6
+	}
 }
