@@ -46,9 +46,16 @@ let monster_number
 let mySound
 const urls = [[1,1,'inky.gif'], [1,13,'blinky.gif'], [13,1,'pinky.gif'], [13,13,'clyde.gif']]
 let monster_move = 1
+let max_speed = 4
 let monsters = []
 let life = 5
 let dog;
+let cure
+let cure_timer = 5
+let snail
+let snail_timer = 0
+let slow_timer = 0
+let slow= false
 
 class User{
 	constructor(user_name,first_name,last_name,email,password,birthday) {
@@ -68,6 +75,15 @@ class Monster{
 		this.last_c = last_cell
 		this.x = x_coor
 		this.y = y_coor
+	}
+}
+
+class upgrade{
+	constructor(url) {
+		this.img = new Image(40,40)
+		this.img.src = url
+		this.x = undefined
+		this.y = undefined
 	}
 }
 
@@ -198,7 +214,7 @@ function Start() {
 function findRandomEmptyCell(board) {
 	let i = Math.floor(Math.random() * 14 + 1);
 	let j = Math.floor(Math.random() * 14 + 1);
-	while (board[i][j] === 0 || (board[i][j] >= 2 && board[i][j] <= 4)) {
+	while (board[i][j] != 1) {
 		i = Math.floor(Math.random() * 14 + 1);
 		j = Math.floor(Math.random() * 14 + 1);
 	}
@@ -281,12 +297,34 @@ function Draw(start,end,dir,x_eye,y_eye) {
 			else if (board[i][j] == 7){
 				context.drawImage(dog.img,center.x-20,center.y-20,dog.img.width,dog.img.height)
 			}
+			else if (board[i][j] == 8){
+				context.drawImage(cure.img,center.x-20,center.y-20,cure.img.width,cure.img.height)
+			}
+			else if (board[i][j] == 9){
+				context.drawImage(snail.img,center.x-20,center.y-20,snail.img.width,snail.img.height)
+			}
 		}
 	}
 }
 
 function UpdatePosition() {
-	let busted = false
+	let dist = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]
+	let opt1 = dist[Math.floor(Math.random()*dist.length)]
+	if (opt1 === 1 && cure === undefined) {
+		cure = new upgrade('cure.gif')
+		let cell = findRandomEmptyCell(board)
+		cure.x = cell[0]
+		cure.y = cell[1]
+		board[cell[0]][cell[1]] = 8
+	}
+	let opt2 = dist[Math.floor(Math.random()*dist.length)]
+	if (opt2 === 1 && snail === undefined) {
+		snail = new upgrade('snail.jfif')
+		let cell = findRandomEmptyCell(board)
+		snail.x = cell[0]
+		snail.y = cell[1]
+		board[cell[0]][cell[1]] = 9
+	}
 	board[shape.i][shape.j] = 1;
 	let x = GetKeyPressed();
 	if (x == 1) {
@@ -329,7 +367,7 @@ function UpdatePosition() {
 			eye_y = -10
 		}
 	}
-	if (monster_move === 4){
+	if (monster_move === max_speed){
 		for(let i = 0; i < monster_number; i++){
 			let moves = allowed_moves(monsters[i].x,monsters[i].y)
 			let chosen = shortest_path(moves)
@@ -359,21 +397,59 @@ function UpdatePosition() {
 		monster_move = 0
 	}
 	monster_move++
-
+	if (cure !== undefined){
+		cure_timer-=0.1
+	}
+	if (cure !== undefined && cure_timer <= 0){
+		cure_timer = 5
+		board[cure.x][cure.y] = 1
+		cure = undefined
+	}
+	// if (slow === true){
+	// 	slow_timer -= 0.1
+	// }
+	// if (slow_timer <= 0){
+	// 	slow = false
+	// 	max_speed = 4
+	// }
+	// if (snail !== undefined){
+	// 	snail_timer-=0.1
+	// }
+	// if (snail !== undefined && snail <= 0){
+	// 	snail_timer = 5
+	// 	board[snail.x][snail.y] = 1
+	// 	snail = undefined
+	// }
 	if (dog !== undefined && dog.x == shape.i && dog.y == shape.j){
 		score+=50
 		board[dog.x][dog.y] = dog.last_c
 		dog = undefined
 	}
+	if (board[shape.i][shape.j] === 8){
+		life++
+		board[shape.i][shape.j] = 1
+		cure = undefined
+		cure_timer = 5
+	}
+	if (board[shape.i][shape.j] === 9){
+		max_speed = 8
+		slow = true
+		board[shape.i][shape.j] = 1
+		snail = undefined
+		snail_timer += 5
+	}
 	if (board[shape.i][shape.j] === 2) {
+		board[shape.i][shape.j] = 1
 		score+=5;
 		ball_numbers--
 	}
 	if (board[shape.i][shape.j] === 3) {
+		board[shape.i][shape.j] = 1
 		score+=15;
 		ball_numbers--
 	}
 	if (board[shape.i][shape.j] === 4) {
+		board[shape.i][shape.j] = 1
 		score+=25;
 		ball_numbers--
 	}
