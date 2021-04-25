@@ -48,6 +48,7 @@ const urls = [[1,1,'inky.gif'], [1,13,'blinky.gif'], [13,1,'pinky.gif'], [13,13,
 let monster_move = 1
 let monsters = []
 let life = 5
+let dog;
 
 class User{
 	constructor(user_name,first_name,last_name,email,password,birthday) {
@@ -172,6 +173,8 @@ function Start() {
 		board[urls[i][0]][urls[i][1]] = 6
 		monsters.push(mon)
 	}
+	dog = new Monster(6,7,board[6][7],'dogo.gif')
+	board[6][7] = 7
 	keysDown = {};
 	addEventListener(
 		"keydown",
@@ -275,11 +278,15 @@ function Draw(start,end,dir,x_eye,y_eye) {
 				context.drawImage(m.img,center.x-20,center.y-20,m.img.width,m.img.height)
 				monst++
 			}
+			else if (board[i][j] == 7){
+				context.drawImage(dog.img,center.x-20,center.y-20,dog.img.width,dog.img.height)
+			}
 		}
 	}
 }
 
 function UpdatePosition() {
+	let busted = false
 	board[shape.i][shape.j] = 1;
 	let x = GetKeyPressed();
 	if (x == 1) {
@@ -336,12 +343,28 @@ function UpdatePosition() {
 				reset_monsters()
 				locate_pacman()
 				life--
+				score-=10
 				break
 			}
+		}
+		if (dog !== undefined){
+			let moves = allowed_moves(dog.x,dog.y)
+			let chosen = moves[Math.floor(Math.random() * moves.length)]
+			board[dog.x][dog.y] = dog.last_c
+			dog.last_c = board[chosen[0]][chosen[1]]
+			dog.x = chosen[0]
+			dog.y = chosen[1]
+			board[chosen[0]][chosen[1]] = 7
 		}
 		monster_move = 0
 	}
 	monster_move++
+
+	if (dog !== undefined && dog.x == shape.i && dog.y == shape.j){
+		score+=50
+		board[dog.x][dog.y] = dog.last_c
+		dog = undefined
+	}
 	if (board[shape.i][shape.j] === 2) {
 		score+=5;
 		ball_numbers--
@@ -356,6 +379,10 @@ function UpdatePosition() {
 	}
 	board[shape.i][shape.j] = 5;
 	time_elapsed = time_elapsed-0.1;
+	if (life === 0){
+		window.clearInterval(interval);
+		window.alert("Loser!");
+	}
 	if (time_elapsed <= 0){
 		window.clearInterval(interval);
 		window.alert("Times Up!");
@@ -510,12 +537,13 @@ function allowed_moves(x,y){
 	let y_move = [0,0,-1,1]
 	let possible_moves = []
 	for (let i = 0; i < 4; i++){
-		if (board[x+x_move[i]][y+y_move[i]] != 0 && board[x+x_move[i]][y+y_move[i]] != 6 ){
+		if (board[x+x_move[i]][y+y_move[i]] != 0 && board[x+x_move[i]][y+y_move[i]] != 6 && board[x+x_move[i]][y+y_move[i]] != 7 ){
 			possible_moves.push([x+x_move[i],y+y_move[i]])
 		}
 	}
 	return possible_moves
 }
+
 
 function shortest_path(moves){
 	let min_path = Number.MAX_SAFE_INTEGER
@@ -539,8 +567,10 @@ function locate_pacman(){
 
 function reset_monsters(){
 	for(let i = 0; i < monster_number; i++ ){
+		board[monsters[i].x][monsters[i].y] = monsters[i].last_c
 		monsters[i].x = urls[i][0]
 		monsters[i].y = urls[i][1]
+		monsters[i].last_c = board[urls[i][0]][urls[i][1]]
 		board[urls[i][0]][urls[i][1]] = 6
 	}
 }
