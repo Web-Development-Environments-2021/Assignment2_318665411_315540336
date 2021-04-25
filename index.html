@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="styl.css">
 	<link rel="stylesheet" href="reg.css">
 	<link rel="stylesheet" href="login.css">
+	<link rel="stylesheet" href="game.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="/resources/demos/style.css">
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.css">
@@ -14,6 +15,9 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.js"></Script>
 	<script src="/resources/demos/external/jquery-mousewheel/jquery.mousewheel.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
 	<script src="app.js"></script>
 	<script>
 		$( function() {
@@ -55,11 +59,19 @@
 </head>
 
 <body>
+<div id="ex1" class="modal">
+	<div id="img-dialog">
+		<img src="https://i.pinimg.com/originals/7f/6f/21/7f6f2192fb315b043ac6ad72e7aceb63.jpg" width=60>
+	</div>
+	<div id="text-dialog"><p>Roi Reinshtein and Noa Tal</p></div>
+	<a id="close" href="#" rel="modal:close">Close</a>
+</div>
+
 <ul id="menu">
 	<li><a class="active" onclick="go_to_home()">Home</a></li>
 	<li><a href="#" onclick="go_to_login()">Login</a></li>
 	<li><a href="#" onclick="go_to_reg()">Register</a></li>
-	<li style="float:right"><a href="#about">About</a></li>
+	<li  style="float:right"><a href="#ex1" rel="modal:open">About</a></li>
 </ul>
 <div class="content" id="Welcome">
 	<image src="logo.gif"></image>
@@ -146,11 +158,11 @@
 	</form>
 </div>
 <div class="content" id="Game_Area" style="display: none;color: white">
-	<div id="score">
+	<div id="score" class ="info">
 		<label for="lblScore">SCORE:</label>
 		<input id="lblScore" type="text" />
 	</div>
-	<div id="time">
+	<div id="time" >
 		<label for="lblTime">TIME:</label>
 		<input id="lblTime" type="text" />
 	</div>

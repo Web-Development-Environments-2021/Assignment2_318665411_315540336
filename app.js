@@ -19,7 +19,6 @@ let board = [
 ]
 let score;
 let pac_color;
-let start_time;
 let time_elapsed;
 let interval;
 let users = []
@@ -28,7 +27,7 @@ let options=['1','2','3','4','5','6','7','8','9','0','a','b','c',
 			'o','p','q','s','t','u','v','w','x','y','z','Arrowup',
 			'Arrowdown','Arrowleft','Arrowright' ]
 
-
+let keysDown
 let up_code
 let down_code
 let right_code
@@ -56,6 +55,7 @@ let snail
 let snail_timer = 0
 let slow_timer = 0
 let slow= false
+let dist = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]
 
 class User{
 	constructor(user_name,first_name,last_name,email,password,birthday) {
@@ -78,6 +78,16 @@ class Monster{
 	}
 }
 
+class pacman_param{
+	constructor(start,end,dir,ex,ey) {
+		this.an_start = start
+		this.an_end = end
+		this.direction = dir
+		this.e_x = ex
+		this.e_y = ey
+	}
+}
+
 class upgrade{
 	constructor(url) {
 		this.img = new Image(40,40)
@@ -86,6 +96,8 @@ class upgrade{
 		this.y = undefined
 	}
 }
+
+let p_param = new pacman_param(0.1,1.85,false,3,-10)
 
 $(document).ready(function() {
 	let k_user = new User('k','k','k','k@gmail.com','k','1/1/1970')
@@ -176,7 +188,6 @@ function Start() {
 	pac_color = "yellow";
 	let food_remain = ball_numbers;
 	let pacman_remain = 1;
-	start_time = new Date();
 	while (food_remain > 0) {
 		let distribution = [2,2,2,2,2,2,3,3,3,4]
 		let emptyCell = findRandomEmptyCell(board);
@@ -236,7 +247,7 @@ function GetKeyPressed() {
 	}
 }
 
-function Draw(start,end,dir,x_eye,y_eye) {
+function Draw(param) {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
@@ -248,13 +259,13 @@ function Draw(start,end,dir,x_eye,y_eye) {
 			center.x = j * 40 + 20;
 			if (board[i][j] == 5) {
 				context.beginPath();
-				context.arc(center.x, center.y, 20, start * Math.PI, end * Math.PI,dir); // half circle
+				context.arc(center.x, center.y, 20, param.an_start * Math.PI, param.an_end * Math.PI,param.direction); // half circle
 				context.lineTo(center.x, center.y);
 				context.closePath()
 				context.fillStyle = pac_color; //color
 				context.fill();
 				context.beginPath();
-				context.arc(center.x + x_eye, center.y + y_eye, 3, 0, 2 * Math.PI); // circle
+				context.arc(center.x + param.e_x, center.y + param.e_y, 3, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
 			} else if (board[i][j] == 2) {
@@ -283,9 +294,9 @@ function Draw(start,end,dir,x_eye,y_eye) {
 				context.fillText("25", center.x-5, center.y+5);
 			} else if (board[i][j] == 0) {
 				context.beginPath();
-				context.rect(center.x - 20, center.y - 20, 40, 40);
-				context.fillStyle = "grey"; //color
-				context.fill();
+				context.strokeStyle = "blue"; //color
+				context.strokeRect(center.x - 20, center.y - 20, 40, 40);
+
 			}
 			else if (board[i][j] == 6){
 				let m = monsters.find((elem)=>{
@@ -298,146 +309,59 @@ function Draw(start,end,dir,x_eye,y_eye) {
 				context.drawImage(dog.img,center.x-20,center.y-20,dog.img.width,dog.img.height)
 			}
 			else if (board[i][j] == 8){
-				context.drawImage(cure.img,center.x-20,center.y-20,cure.img.width,cure.img.height)
-			}
+			 	context.drawImage(cure.img,center.x-20,center.y-20,cure.img.width,cure.img.height)
+			 }
 			else if (board[i][j] == 9){
-				context.drawImage(snail.img,center.x-20,center.y-20,snail.img.width,snail.img.height)
-			}
+			 	context.drawImage(snail.img,center.x-20,center.y-20,snail.img.width,snail.img.height)
+			 }
 		}
 	}
 }
 
 function UpdatePosition() {
-	let dist = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]
-	let opt1 = dist[Math.floor(Math.random()*dist.length)]
-	if (opt1 === 1 && cure === undefined) {
-		cure = new upgrade('cure.gif')
-		let cell = findRandomEmptyCell(board)
-		cure.x = cell[0]
-		cure.y = cell[1]
-		board[cell[0]][cell[1]] = 8
-	}
-	let opt2 = dist[Math.floor(Math.random()*dist.length)]
-	if (opt2 === 1 && snail === undefined) {
-		snail = new upgrade('snail.jfif')
-		let cell = findRandomEmptyCell(board)
-		snail.x = cell[0]
-		snail.y = cell[1]
-		board[cell[0]][cell[1]] = 9
-	}
+	cure = add_upgrade(cure,8,'cure.gif')
+	snail = add_upgrade(snail,9,'snail.png')
 	board[shape.i][shape.j] = 1;
 	let x = GetKeyPressed();
-	if (x == 1) {
+	if (x === 1) {
 		if (shape.j > 0 && board[shape.i-1][shape.j] != 0) {
 			shape.i--;
-			start = 1.6
-			end = 1.35
-			dir = false
-			eye_x = -10
-			eye_y = 3
+			p_param = new pacman_param(1.6,1.35,false,-10,3)
 		}
 	}
-	if (x == 2) {
+	if (x === 2) {
 		if (shape.j < 15 && board[shape.i+1][shape.j] != 0) {
 			shape.i++;
-			start = 0.4
-			end = 0.65
-			dir = true
-			eye_x = -10
-			eye_y = 3
+			p_param = new pacman_param(0.4,0.65,true,-10,3)
 		}
 	}
-	if (x == 3) {
+	if (x === 3) {
 		if (shape.i > 0 && board[shape.i][shape.j-1] != 0) {
 			shape.j--;
-			start = 0.9
-			end = 1.15
-			dir = true
-			eye_x = 3
-			eye_y = -10
+			p_param = new pacman_param(0.9,1.15,true,3,-10)
 		}
 	}
-	if (x == 4) {
+	if (x === 4) {
 		if (shape.i < 15 && board[shape.i][shape.j+1] != 0) {
 			shape.j++;
-			start = 0.1
-			end = 1.85
-			dir = false
-			eye_x = 3
-			eye_y = -10
+			p_param = new pacman_param(0.1,1.85,false,3,-10)
 		}
 	}
-	if (monster_move === max_speed){
-		for(let i = 0; i < monster_number; i++){
-			let moves = allowed_moves(monsters[i].x,monsters[i].y)
-			let chosen = shortest_path(moves)
-			board[monsters[i].x][monsters[i].y] = monsters[i].last_c
-			monsters[i].last_c = board[chosen[0]][chosen[1]]
-			monsters[i].x = chosen[0]
-			monsters[i].y = chosen[1]
-			board[chosen[0]][chosen[1]] = 6
-			if (shape.i == monsters[i].x && shape.j == monsters[i].y){
-				window.alert('busted')
-				reset_monsters()
-				locate_pacman()
-				life--
-				score-=10
-				break
-			}
-		}
-		if (dog !== undefined){
-			let moves = allowed_moves(dog.x,dog.y)
-			let chosen = moves[Math.floor(Math.random() * moves.length)]
-			board[dog.x][dog.y] = dog.last_c
-			dog.last_c = board[chosen[0]][chosen[1]]
-			dog.x = chosen[0]
-			dog.y = chosen[1]
-			board[chosen[0]][chosen[1]] = 7
-		}
-		monster_move = 0
-	}
-	monster_move++
-	if (cure !== undefined){
-		cure_timer-=0.1
-	}
-	if (cure !== undefined && cure_timer <= 0){
-		cure_timer = 5
-		board[cure.x][cure.y] = 1
-		cure = undefined
-	}
-	// if (slow === true){
-	// 	slow_timer -= 0.1
-	// }
-	// if (slow_timer <= 0){
-	// 	slow = false
-	// 	max_speed = 4
-	// }
-	// if (snail !== undefined){
-	// 	snail_timer-=0.1
-	// }
-	// if (snail !== undefined && snail <= 0){
-	// 	snail_timer = 5
-	// 	board[snail.x][snail.y] = 1
-	// 	snail = undefined
-	// }
-	if (dog !== undefined && dog.x == shape.i && dog.y == shape.j){
-		score+=50
-		board[dog.x][dog.y] = dog.last_c
-		dog = undefined
-	}
+	cure_up()
+	snail_up()
 	if (board[shape.i][shape.j] === 8){
-		life++
-		board[shape.i][shape.j] = 1
-		cure = undefined
-		cure_timer = 5
-	}
+	 	life++
+	 	board[shape.i][shape.j] = 1
+	 	cure = undefined
+	 	cure_timer = 5
+	 }
 	if (board[shape.i][shape.j] === 9){
-		max_speed = 8
-		slow = true
-		board[shape.i][shape.j] = 1
-		snail = undefined
-		snail_timer += 5
-	}
+	 	max_speed = 8
+	 	slow = true
+	 	board[shape.i][shape.j] = 1
+	 	snail = undefined
+		slow_timer += 5
+	 }
 	if (board[shape.i][shape.j] === 2) {
 		board[shape.i][shape.j] = 1
 		score+=5;
@@ -454,21 +378,53 @@ function UpdatePosition() {
 		ball_numbers--
 	}
 	board[shape.i][shape.j] = 5;
+	if (monster_move === max_speed){
+		move_monsters()
+		move_dog()
+		monster_move = 0
+	}
+	monster_move++
+	if (slow){
+		slow_timer -= 0.1
+	}
+	if (slow_timer < 0){
+		slow = false
+		max_speed = 4
+		slow_timer = 0
+		monster_move -= 4
+	}
 	time_elapsed = time_elapsed-0.1;
-	if (life === 0){
-		window.clearInterval(interval);
-		window.alert("Loser!");
+	Draw(p_param)
+	if (isCaptured()) {
+		life--
+		keysDown = {}
+		reset_monsters()
+		locate_pacman()
+		setTimeout(()=>{
+			alert('busted')
+		},50)
 	}
-	if (time_elapsed <= 0){
-		window.clearInterval(interval);
-		window.alert("Times Up!");
+	if (dog !== undefined && dog.x == shape.i && dog.y == shape.j){
+		score+=50
+		board[dog.x][dog.y] = dog.last_c
+		dog = undefined
 	}
-	else if (ball_numbers == 0) {
-		window.clearInterval(interval);
-		window.alert("Game completed");
-	} else {
-		Draw(start,end,dir,eye_x,eye_y);
+	if (isGameOver()){
+		window.clearInterval(interval)
+		$('#message').css('visibility','visible')
 	}
+}
+
+function add_upgrade(up,number,url){
+	let opt = dist[Math.floor(Math.random()*dist.length)]
+	if (opt === 1 && up === undefined){
+		up = new upgrade(url)
+		let cell = findRandomEmptyCell(board)
+		up.x = cell[0]
+		up.y = cell[1]
+		board[cell[0]][cell[1]] = number
+	}
+	return up
 }
 
 function go_to_reg(){
@@ -613,7 +569,7 @@ function allowed_moves(x,y){
 	let y_move = [0,0,-1,1]
 	let possible_moves = []
 	for (let i = 0; i < 4; i++){
-		if (board[x+x_move[i]][y+y_move[i]] != 0 && board[x+x_move[i]][y+y_move[i]] != 6 && board[x+x_move[i]][y+y_move[i]] != 7 ){
+		if (board[x+x_move[i]][y+y_move[i]] !== 0 && board[x+x_move[i]][y+y_move[i]] !== 6 && board[x+x_move[i]][y+y_move[i]] !== 7 ){
 			possible_moves.push([x+x_move[i],y+y_move[i]])
 		}
 	}
@@ -643,10 +599,80 @@ function locate_pacman(){
 
 function reset_monsters(){
 	for(let i = 0; i < monster_number; i++ ){
-		board[monsters[i].x][monsters[i].y] = monsters[i].last_c
+		if (monsters[i].last_c === 5){
+			board[monsters[i].x][monsters[i].y] = 1
+		}
+		else{
+			board[monsters[i].x][monsters[i].y] = monsters[i].last_c
+		}
 		monsters[i].x = urls[i][0]
 		monsters[i].y = urls[i][1]
 		monsters[i].last_c = board[urls[i][0]][urls[i][1]]
 		board[urls[i][0]][urls[i][1]] = 6
+	}
+}
+
+function move_monsters() {
+	for (let i = 0; i < monster_number; i++) {
+		let moves = allowed_moves(monsters[i].x, monsters[i].y)
+		let chosen = shortest_path(moves)
+		board[monsters[i].x][monsters[i].y] = monsters[i].last_c
+		monsters[i].last_c = board[chosen[0]][chosen[1]]
+		monsters[i].x = chosen[0]
+		monsters[i].y = chosen[1]
+		board[chosen[0]][chosen[1]] = 6
+	}
+}
+
+function move_dog() {
+	if (dog !== undefined) {
+		let moves = allowed_moves(dog.x, dog.y)
+		let chosen = moves[Math.floor(Math.random() * moves.length)]
+		board[dog.x][dog.y] = dog.last_c
+		dog.last_c = board[chosen[0]][chosen[1]]
+		dog.x = chosen[0]
+		dog.y = chosen[1]
+		board[chosen[0]][chosen[1]] = 7
+	}
+}
+
+function isCaptured(){
+	return monsters.find((m)=>{
+		return m.last_c === 5
+	})
+}
+function isGameOver() {
+	if (life === 0) {
+		$('#message').text('Loser!!!')
+		return true
+	} else if (time_elapsed <= 0) {
+		$('#message').text('You Are Better Than ' + score + ' points')
+		return true
+	} else if (ball_numbers == 0) {
+		$('#message').text('Winner!!!')
+		return true
+	}
+	return false
+}
+
+function cure_up(){
+	if (cure !== undefined){
+	 	cure_timer-=0.1
+	}
+	if (cure !== undefined && cure_timer <= 0) {
+		cure_timer = 5
+		board[cure.x][cure.y] = 1
+		cure = undefined
+	}
+}
+
+function snail_up(){
+	if (snail !== undefined){
+		snail_timer-=0.1
+	}
+	if (snail !== undefined && snail_timer <= 0) {
+		snail_timer = 5
+		board[snail.x][snail.y] = 1
+		snail = undefined
 	}
 }

@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Original+Surfer&display=swap');
+
+
+body{
+    background-color:black;
+}
+
+#game{
+    text-align: center;
+    margin-top: 50px;
+    
+}
+
+#lblScore,#lblTime{
+    font-size: 20px;
+    width: 90px;
+    background-color: black;
+    color: aliceblue;
+    text-align: center;
+    margin-top: 50px;
+
+
+}
+.content label{
+    font-size: 20px;
+    color: blue;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+     margin-right:5px;
+
+}
+
+#score{
+    display:inline-block;
+    margin-right:40px;
+}
+
+#time{
+    display:inline-block;
+}
+
+#Game_Area{
+    text-align: center;
+}
+
+.modal a#close{
+     color: #fff;
+    background: blue;
+    padding: .5rem 1rem;
+    display: inline-block;
+    border-radius: 4px;
+    border: none;
+    font-size: 14px;
+    text-decoration: none;
+    float:inherit;
+}
+.modal a.close-modal{
+   width: 50px !important;
+   height: 50px !important;
+   background-image: url(https://cdn1.iconfinder.com/data/icons/controls-add-on-glyph/48/Sed-29-512.png)!important;
+}
+
+.modal a#close:hover{
+    background: black ;
+}
+
+.modal img{
+      display:inline-block;
+
+}
+.modal p{
+          display:inline-block;
+
+}
+
