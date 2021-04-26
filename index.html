@@ -166,9 +166,15 @@
 		<label for="lblTime">TIME:</label>
 		<input id="lblTime" type="text" />
 	</div>
+	<div id="life" >
+		<label for="lbllife">LIFE:</label>
+		<input id="lbllife" type="text" />
+	</div>
 	<div id="game">
 		<canvas id="canvas" height="600" width="600"></canvas>
 	</div>
+	<button onclick="reset_game()">Start New Game</button>
+	<h1 id="User" style="color:yellow;"></h1>
 </div>
 <div class="content " id="settings" style="display: none">
 	<form class="settings_content">
@@ -210,8 +216,9 @@
 		</p>
 		<p>
 			<input type="button" value="Random" onclick="set_settings()">
-			<input type="button" value="Start" onclick="start_game()">
+			<input type="button" value="Start" onclick="return start_game()">
 		</p>
+		<p id="warning" style="visibility: hidden; color: red">Keys Must Be Different</p>
 	</form>
 </div>
 </body>

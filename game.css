@@ -11,7 +11,7 @@ body{
     
 }
 
-#lblScore,#lblTime{
+#lblScore,#lblTime,#lbllife{
     font-size: 20px;
     width: 90px;
     background-color: black;
@@ -36,8 +36,12 @@ body{
 
 #time{
     display:inline-block;
+    margin-right:40px;
 }
 
+#life{
+    display: inline-block;
+}
 #Game_Area{
     text-align: center;
 }
@@ -72,3 +76,10 @@ body{
 
 }
 
+#User{
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 100px;
+    position: absolute;
+    left: 10%;
+    top: 5%
+}

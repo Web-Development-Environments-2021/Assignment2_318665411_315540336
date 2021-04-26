@@ -1,22 +1,6 @@
 let context;
 let shape = new Object();
-let board = [
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-	[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
-	[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
-	[0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0],
-	[0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0],
-	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-	[0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0],
-	[0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0],
-	[0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0],
-	[0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0],
-	[0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0],
-	[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
-	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-]
+let board
 let score;
 let pac_color;
 let time_elapsed;
@@ -46,17 +30,17 @@ let mySound
 const urls = [[1,1,'inky.gif'], [1,13,'blinky.gif'], [13,1,'pinky.gif'], [13,13,'clyde.gif']]
 let monster_move = 1
 let max_speed = 4
-let monsters = []
-let life = 5
+let monsters
+let life
 let dog;
 let cure
 let cure_timer = 5
 let snail
-let snail_timer = 0
+let snail_timer = 5
 let slow_timer = 0
 let slow= false
 let dist = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]
-
+let actuive_user
 class User{
 	constructor(user_name,first_name,last_name,email,password,birthday) {
 		this.user_name = user_name
@@ -79,12 +63,14 @@ class Monster{
 }
 
 class pacman_param{
-	constructor(start,end,dir,ex,ey) {
+	constructor(start,end,dir,ex,ey,op) {
 		this.an_start = start
 		this.an_end = end
 		this.direction = dir
 		this.e_x = ex
 		this.e_y = ey
+		this.popen = op
+
 	}
 }
 
@@ -184,18 +170,41 @@ $(document).ready(function() {
 
 
 function Start() {
+	monsters = []
+	board = [
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+		[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+		[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+		[0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0],
+		[0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0],
+		[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+		[0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0],
+		[0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0],
+		[0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0],
+		[0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0],
+		[0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0],
+		[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+		[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+	]
 	score = 0;
 	pac_color = "yellow";
 	let food_remain = ball_numbers;
+	life = 5
 	let pacman_remain = 1;
+	console.log(food_remain)
 	while (food_remain > 0) {
 		let distribution = [2,2,2,2,2,2,3,3,3,4]
 		let emptyCell = findRandomEmptyCell(board);
 		board[emptyCell[0]][emptyCell[1]] = distribution[Math.floor(Math.random()*distribution.length)];
 		food_remain--;
 	}
+	console.log("hey3")
 	locate_pacman()
+	console.log("hey4")
 	for(let i = 0; i < monster_number;i++){
+		console.log("hey")
 		let mon = new Monster(urls[i][0],urls[i][1],board[urls[i][0]][urls[i][1]],urls[i][2])
 		board[urls[i][0]][urls[i][1]] = 6
 		monsters.push(mon)
@@ -247,7 +256,7 @@ function GetKeyPressed() {
 	}
 }
 
-function Draw(param) {
+function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
@@ -259,13 +268,13 @@ function Draw(param) {
 			center.x = j * 40 + 20;
 			if (board[i][j] == 5) {
 				context.beginPath();
-				context.arc(center.x, center.y, 20, param.an_start * Math.PI, param.an_end * Math.PI,param.direction); // half circle
+				context.arc(center.x, center.y, 20, p_param.an_start * Math.PI, p_param.an_end * Math.PI,p_param.direction); // half circle
 				context.lineTo(center.x, center.y);
 				context.closePath()
 				context.fillStyle = pac_color; //color
 				context.fill();
 				context.beginPath();
-				context.arc(center.x + param.e_x, center.y + param.e_y, 3, 0, 2 * Math.PI); // circle
+				context.arc(center.x + p_param.e_x, center.y + p_param.e_y, 3, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
 			} else if (board[i][j] == 2) {
@@ -326,31 +335,32 @@ function UpdatePosition() {
 	if (x === 1) {
 		if (shape.j > 0 && board[shape.i-1][shape.j] != 0) {
 			shape.i--;
-			p_param = new pacman_param(1.6,1.35,false,-10,3)
+			p_param = new pacman_param(1.6,1.35,false,-10,3,100)
 		}
 	}
 	if (x === 2) {
 		if (shape.j < 15 && board[shape.i+1][shape.j] != 0) {
 			shape.i++;
-			p_param = new pacman_param(0.4,0.65,true,-10,3)
+			p_param = new pacman_param(0.4,0.65,true,-10,3,100)
 		}
 	}
 	if (x === 3) {
 		if (shape.i > 0 && board[shape.i][shape.j-1] != 0) {
 			shape.j--;
-			p_param = new pacman_param(0.9,1.15,true,3,-10)
+			p_param = new pacman_param(0.9,1.15,true,3,-10,100)
 		}
 	}
 	if (x === 4) {
 		if (shape.i < 15 && board[shape.i][shape.j+1] != 0) {
 			shape.j++;
-			p_param = new pacman_param(0.1,1.85,false,3,-10)
+			p_param = new pacman_param(0.1,1.85,false,3,-10,100)
 		}
 	}
 	cure_up()
 	snail_up()
 	if (board[shape.i][shape.j] === 8){
 	 	life++
+		$('#lbllife').val(life)
 	 	board[shape.i][shape.j] = 1
 	 	cure = undefined
 	 	cure_timer = 5
@@ -394,9 +404,11 @@ function UpdatePosition() {
 		monster_move -= 4
 	}
 	time_elapsed = time_elapsed-0.1;
-	Draw(p_param)
+	Draw()
 	if (isCaptured()) {
 		life--
+		$('#lbllife').val(life)
+		score -= 10
 		keysDown = {}
 		reset_monsters()
 		locate_pacman()
@@ -428,25 +440,39 @@ function add_upgrade(up,number,url){
 }
 
 function go_to_reg(){
+	if( $('#Game_Area').css('display') !== 'none' ){
+		window.clearInterval(interval)
+	}
 	$(".content").css("display","none")
 	$("#Register").css("display","block")
 }
 
 function go_to_login(){
+	if( $('#Game_Area').css('display') !== 'none' ){
+		window.clearInterval(interval)
+	}
 	$(".content").css("display","none")
 	$("#Login").css("display","block")
 }
 
 function go_to_home(){
+	if( $('#Game_Area').css('display') !== 'none' ){
+		window.clearInterval(interval)
+	}
 	$(".content").css("display","none")
 	$("#Welcome").css("display","block")
 }
 
 function start_game(){
-	$(".content").css("display","none")
-	$("#Game_Area").css("display","block")
-	get_controls()
-	Start()
+	if (get_controls()){
+		$(".content").css("display","none")
+		$("#Game_Area").css("display","block")
+		Start()
+	}
+	else{
+		$('#warning').css('visibility','visible')
+		return false
+	}
 }
 
 function validate_vals(){
@@ -461,8 +487,10 @@ function validate_vals(){
 		return false
 	}
 	else{
+		actuive_user = user
 		$(".content").css("display","none")
 		$("#settings").css("display","block")
+		$("#warning").css('visibility','hidden')
 		$('.settings_content')[0].reset()
 	}
 	return false
@@ -555,13 +583,19 @@ function get_controls(){
 	else{
 		left_code = left.toUpperCase().charCodeAt(0)
 	}
+	if (up === down || up === right || up === left || down === right || down === left || right === left){
+		return false
+	}
 	time_elapsed = $('#spinner').val()
 	$('#lblTime').val(time_elapsed)
+	$('#lbllife').val(5)
 	ball_numbers = $('#amount').val()
 	small_color = $('#ball1').val()
 	medium_color = $('#ball2').val()
 	big_color = $('#ball3').val()
 	monster_number = $('#monsters').val()
+	$('#User').text(actuive_user.user_name)
+	return true
 }
 
 function allowed_moves(x,y){
@@ -675,4 +709,11 @@ function snail_up(){
 		board[snail.x][snail.y] = 1
 		snail = undefined
 	}
+}
+
+function reset_game(){
+	window.clearInterval(interval)
+	$("#warning").css('visibility','hidden')
+	$('.content').css('display','none')
+	$('#settings').css('display','block')
 }
