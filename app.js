@@ -43,6 +43,9 @@ let dist = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 let actuive_user
 let snail_flag
 let cure_flag
+let audio_game_over = new Audio('GameOver.mp3');
+let audio_game_win = new Audio('Win.mp3');
+
 class User{
 	constructor(user_name,first_name,last_name,email,password,birthday) {
 		this.user_name = user_name
@@ -74,7 +77,6 @@ class pacman_param{
 
 	}
 }
-
 class upgrade{
 	constructor(url) {
 		this.img = new Image(40,40)
@@ -219,10 +221,18 @@ function Start() {
 	}
 	board[6][7] = 7
 	keysDown = {};
+	add_listener()
+	// mySound = new Audio('among.mpeg')
+	// mySound.start()
+	interval = setInterval(UpdatePosition, 100);
+}
+
+function add_listener(){
 	addEventListener(
 		"keydown",
 		function(e) {
 			keysDown[e.keyCode] = true;
+			e.preventDefault();
 		},
 		false
 	);
@@ -230,14 +240,11 @@ function Start() {
 		"keyup",
 		function(e) {
 			keysDown[e.keyCode] = false;
+			e.preventDefault();
 		},
 		false
 	);
-	// mySound = new Audio('among.mpeg')
-	// mySound.start()
-	interval = setInterval(UpdatePosition, 100);
 }
-
 function findRandomEmptyCell(board) {
 	let i = Math.floor(Math.random() * 14 + 1);
 	let j = Math.floor(Math.random() * 14 + 1);
@@ -395,19 +402,7 @@ function UpdatePosition() {
 	 }
 	 else if (board[shape.i][shape.j] === 6 ){
 	 	Draw()
-	 	reset_monsters()
-	 	locate_pacman()
-	 	setTimeout(()=>{
-	 		alert('busted')
-	 	},50)
-	 	life--
-	 	$('#lbllife').val(life)
-	 	score -= 10
-	 	keysDown = {}
-	 	if (isGameOver()){
-	 		window.clearInterval(interval)
-	 		$('#message').css('visibility','visible')
-	 	}
+		busted()
 	 	return
 	 }
 	else if (board[shape.i][shape.j] === 2) {
@@ -441,15 +436,7 @@ function UpdatePosition() {
 	time_elapsed = time_elapsed-0.1;
 	Draw()
 	if (isCaptured()) {
-		life--
-		$('#lbllife').val(life)
-		score -= 10
-		keysDown = {}
-		reset_monsters()
-		locate_pacman()
-		setTimeout(()=>{
-			alert('busted')
-		},50)
+		busted()
 	}
 	if (dog !== undefined && dog.x == shape.i && dog.y == shape.j){
 		score+=50
@@ -462,6 +449,13 @@ function UpdatePosition() {
 	}
 }
 
+function busted(){
+	life--
+	$('#lbllife').val(life)
+	score -= 10
+	reset_monsters()
+	locate_pacman()
+}
 function go_to_reg(){
 	if( $('#Game_Area').css('display') !== 'none' ){
 		window.clearInterval(interval)
@@ -617,7 +611,17 @@ function get_controls(){
 	medium_color = $('#ball2').val()
 	big_color = $('#ball3').val()
 	monster_number = $('#monsters').val()
-	$('#User').text(actuive_user.user_name)
+	$('#User').text("hey: "+actuive_user.user_name)
+	$("#key_up").text("Key up: "+up)
+	$("#key_down").text("Key down: "+down)
+	$("#key_right").text("Key right: "+right)
+	$("#key_left").text("Key left: "+left)
+	$("#num_balls").text("Number of balls: "+ball_numbers)
+	$("#num_monsters").text("Number of monsters: "+monster_number)
+	$("#timer_value").text("timer: "+ time_elapsed)
+	$("#ball_5").css("background-color",small_color)
+	$("#ball_15").css("background-color",medium_color)
+	$("#ball_25").css("background-color",big_color)
 	return true
 }
 
@@ -655,6 +659,7 @@ function locate_pacman(){
 	shape.i = emptyCell[0]
 	shape.j = emptyCell[1]
 	board[emptyCell[0]][emptyCell[1]]=5
+
 }
 
 function reset_monsters(){
@@ -715,16 +720,17 @@ function ballsOnBoard() {
 
 function isGameOver() {
 	if (life === 0) {
-		$('#message').text('Loser!!!')
+		lose()
 		return true
 	} else if (time_elapsed <= 0) {
-		$('#message').text('You Are Better Than ' + score + ' points')
+		$('#Timer_finish').text('You Are Better Than ' + score + ' points')
+		time_lose()
 		return true
 	} else if (!ballsOnBoard()) {
 		if(!(monsters.find((m)=>{
-			return m.last_c > 1 && m1.last_c < 5
+			return m.last_c > 1 && m.last_c < 5
 		}))){
-			$('#message').text('Winner!!!')
+			win()
 			return true
 		}
 	}
@@ -770,4 +776,26 @@ function continue_game(){
 	if( $('#Game_Area').css('display') !== 'none' ){
 		window.setInterval(UpdatePosition,100)
 	}
+}
+
+function lose(){
+	audio_game_over.play()
+	$("#loser").css('display','block')
+	setTimeout(function(){$("#loser").css('display','none')},4000)
+
+
+}
+
+function win(){
+	audio_game_win.play()
+	$("#win").css('display','block')
+	setTimeout(function(){$("#win").css('display','none')},4000)
+
+}
+
+function time_lose(){
+	audio_game_over.play()
+	setTimeout(function(){$("#Timer_finish").css('display','none')},4000)
+
+
 }
