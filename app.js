@@ -34,13 +34,15 @@ let monsters
 let life
 let dog;
 let cure
-let cure_timer = 5
+let cure_timer
 let snail
-let snail_timer = 5
+let snail_timer
 let slow_timer = 0
 let slow= false
 let dist = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]
 let actuive_user
+let snail_flag
+let cure_flag
 class User{
 	constructor(user_name,first_name,last_name,email,password,birthday) {
 		this.user_name = user_name
@@ -63,13 +65,12 @@ class Monster{
 }
 
 class pacman_param{
-	constructor(start,end,dir,ex,ey,op) {
+	constructor(start,end,dir,ex,ey) {
 		this.an_start = start
 		this.an_end = end
 		this.direction = dir
 		this.e_x = ex
 		this.e_y = ey
-		this.popen = op
 
 	}
 }
@@ -78,8 +79,8 @@ class upgrade{
 	constructor(url) {
 		this.img = new Image(40,40)
 		this.img.src = url
-		this.x = undefined
-		this.y = undefined
+		this.x = 1
+		this.y = 1
 	}
 }
 
@@ -189,6 +190,12 @@ function Start() {
 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	]
 	score = 0;
+	cure_timer = 5
+	snail_timer = 5
+	cure_flag = false
+	snail_flag = false
+	cure = new upgrade('cure.gif')
+	snail = new upgrade('snail.png')
 	pac_color = "yellow";
 	let food_remain = ball_numbers;
 	life = 5
@@ -320,16 +327,30 @@ function Draw() {
 			else if (board[i][j] == 8){
 			 	context.drawImage(cure.img,center.x-20,center.y-20,cure.img.width,cure.img.height)
 			 }
-			else if (board[i][j] == 9){
-			 	context.drawImage(snail.img,center.x-20,center.y-20,snail.img.width,snail.img.height)
-			 }
+			 else if (board[i][j] == 9){
+			  	context.drawImage(snail.img,center.x-20,center.y-20,snail.img.width,snail.img.height)
+			  }
 		}
 	}
 }
 
 function UpdatePosition() {
-	cure = add_upgrade(cure,8,'cure.gif')
-	snail = add_upgrade(snail,9,'snail.png')
+	let opt1 = dist[Math.floor(Math.random()*dist.length)]
+	if (opt1 === 1 && cure_flag === false){
+		cure_flag = true
+		let cell = findRandomEmptyCell(board)
+		cure.x = cell[0]
+		cure.y = cell[1]
+		board[cell[0]][cell[1]] = 8
+	}
+	let opt2= dist[Math.floor(Math.random()*dist.length)]
+	if (opt2 === 1 && snail_flag === false){
+		snail_flag = true
+		let cell = findRandomEmptyCell(board)
+		snail.x = cell[0]
+		snail.y = cell[1]
+		board[cell[0]][cell[1]] = 9
+	}
 	board[shape.i][shape.j] = 1;
 	let x = GetKeyPressed();
 	if (x === 1) {
@@ -362,16 +383,33 @@ function UpdatePosition() {
 	 	life++
 		$('#lbllife').val(life)
 	 	board[shape.i][shape.j] = 1
-	 	cure = undefined
+	 	cure_flag = false
 	 	cure_timer = 5
 	 }
 	if (board[shape.i][shape.j] === 9){
 	 	max_speed = 8
 	 	slow = true
 	 	board[shape.i][shape.j] = 1
-	 	snail = undefined
+	 	snail_flag = false
 		slow_timer += 5
 	 }
+	if (board[shape.i][shape.j] === 6 ){
+		Draw()
+		life--
+		$('#lbllife').val(life)
+		score -= 10
+		keysDown = {}
+		reset_monsters()
+		locate_pacman()
+		setTimeout(()=>{
+			alert('busted')
+		},50)
+		if (isGameOver()){
+			window.clearInterval(interval)
+			$('#message').css('visibility','visible')
+		}
+		return
+	}
 	if (board[shape.i][shape.j] === 2) {
 		board[shape.i][shape.j] = 1
 		score+=5;
@@ -425,18 +463,6 @@ function UpdatePosition() {
 		window.clearInterval(interval)
 		$('#message').css('visibility','visible')
 	}
-}
-
-function add_upgrade(up,number,url){
-	let opt = dist[Math.floor(Math.random()*dist.length)]
-	if (opt === 1 && up === undefined){
-		up = new upgrade(url)
-		let cell = findRandomEmptyCell(board)
-		up.x = cell[0]
-		up.y = cell[1]
-		board[cell[0]][cell[1]] = number
-	}
-	return up
 }
 
 function go_to_reg(){
@@ -690,26 +716,26 @@ function isGameOver() {
 }
 
 function cure_up(){
-	if (cure !== undefined){
+	if (cure_flag){
 	 	cure_timer-=0.1
 	}
-	if (cure !== undefined && cure_timer <= 0) {
+	if (cure_flag && cure_timer <= 0) {
 		cure_timer = 5
 		board[cure.x][cure.y] = 1
-		cure = undefined
+		cure_flag = false
 	}
 }
 
 function snail_up(){
-	if (snail !== undefined){
-		snail_timer-=0.1
-	}
-	if (snail !== undefined && snail_timer <= 0) {
-		snail_timer = 5
-		board[snail.x][snail.y] = 1
-		snail = undefined
-	}
-}
+ 	if (snail_flag){
+ 		snail_timer-=0.1
+ 	}
+ 	if (snail_flag && snail_timer <= 0) {
+ 		snail_timer = 5
+ 		board[snail.x][snail.y] = 1
+ 		snail_flag = false
+ 	}
+ }
 
 function reset_game(){
 	window.clearInterval(interval)
