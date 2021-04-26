@@ -64,14 +64,14 @@
 		<img src="https://i.pinimg.com/originals/7f/6f/21/7f6f2192fb315b043ac6ad72e7aceb63.jpg" width=60>
 	</div>
 	<div id="text-dialog"><p>Roi Reinshtein and Noa Tal</p></div>
-	<a id="close" href="#" rel="modal:close">Close</a>
+	<a id="close" href="#" rel="modal:close" onclick="continue_game()">Close</a>
 </div>
 
 <ul id="menu">
 	<li><a class="active" onclick="go_to_home()">Home</a></li>
 	<li><a href="#" onclick="go_to_login()">Login</a></li>
 	<li><a href="#" onclick="go_to_reg()">Register</a></li>
-	<li  style="float:right"><a href="#ex1" rel="modal:open">About</a></li>
+	<li  style="float:right" onclick="about()" oncancel="continue_game()"><a href="#ex1" rel="modal:open">About</a></li>
 </ul>
 <div class="content" id="Welcome">
 	<image src="logo.gif"></image>

@@ -201,12 +201,6 @@ function Start() {
 	life = 5
 	let pacman_remain = 1;
 	console.log(food_remain)
-	while (food_remain > 0) {
-		let distribution = [2,2,2,2,2,2,3,3,3,4]
-		let emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = distribution[Math.floor(Math.random()*distribution.length)];
-		food_remain--;
-	}
 	console.log("hey3")
 	locate_pacman()
 	console.log("hey4")
@@ -217,6 +211,12 @@ function Start() {
 		monsters.push(mon)
 	}
 	dog = new Monster(6,7,board[6][7],'dogo.gif')
+	while (food_remain > 0) {
+		let distribution = [2,2,2,2,2,2,3,3,3,4]
+		let emptyCell = findRandomEmptyCell(board);
+		board[emptyCell[0]][emptyCell[1]] = distribution[Math.floor(Math.random()*distribution.length)];
+		food_remain--;
+	}
 	board[6][7] = 7
 	keysDown = {};
 	addEventListener(
@@ -290,7 +290,7 @@ function Draw() {
 				context.fillStyle = small_color; //color
 				context.fill();
 				context.beginPath();
-				context.fillStyle = "black";
+				context.fillStyle = "white";
 				context.fillText("5", center.x-3, center.y+4);
 			} else if (board[i][j] == 3) {
 				context.beginPath();
@@ -298,7 +298,7 @@ function Draw() {
 				context.fillStyle = medium_color; //color
 				context.fill();
 				context.beginPath();
-				context.fillStyle = "black";
+				context.fillStyle = "white";
 				context.fillText("15", center.x-5, center.y+4);
 			} else if (board[i][j] == 4) {
 				context.beginPath();
@@ -306,7 +306,7 @@ function Draw() {
 				context.fillStyle = big_color; //color
 				context.fill();
 				context.beginPath();
-				context.fillStyle = "black";
+				context.fillStyle = "white";
 				context.fillText("25", center.x-5, center.y+5);
 			} else if (board[i][j] == 0) {
 				context.beginPath();
@@ -386,44 +386,41 @@ function UpdatePosition() {
 	 	cure_flag = false
 	 	cure_timer = 5
 	 }
-	if (board[shape.i][shape.j] === 9){
+	else if (board[shape.i][shape.j] === 9){
 	 	max_speed = 8
 	 	slow = true
 	 	board[shape.i][shape.j] = 1
 	 	snail_flag = false
 		slow_timer += 5
 	 }
-	if (board[shape.i][shape.j] === 6 ){
-		Draw()
-		life--
-		$('#lbllife').val(life)
-		score -= 10
-		keysDown = {}
-		reset_monsters()
-		locate_pacman()
-		setTimeout(()=>{
-			alert('busted')
-		},50)
-		if (isGameOver()){
-			window.clearInterval(interval)
-			$('#message').css('visibility','visible')
-		}
-		return
-	}
-	if (board[shape.i][shape.j] === 2) {
+	 else if (board[shape.i][shape.j] === 6 ){
+	 	Draw()
+	 	reset_monsters()
+	 	locate_pacman()
+	 	setTimeout(()=>{
+	 		alert('busted')
+	 	},50)
+	 	life--
+	 	$('#lbllife').val(life)
+	 	score -= 10
+	 	keysDown = {}
+	 	if (isGameOver()){
+	 		window.clearInterval(interval)
+	 		$('#message').css('visibility','visible')
+	 	}
+	 	return
+	 }
+	else if (board[shape.i][shape.j] === 2) {
 		board[shape.i][shape.j] = 1
 		score+=5;
-		ball_numbers--
 	}
-	if (board[shape.i][shape.j] === 3) {
+	else if (board[shape.i][shape.j] === 3) {
 		board[shape.i][shape.j] = 1
 		score+=15;
-		ball_numbers--
 	}
-	if (board[shape.i][shape.j] === 4) {
+	else if (board[shape.i][shape.j] === 4) {
 		board[shape.i][shape.j] = 1
 		score+=25;
-		ball_numbers--
 	}
 	board[shape.i][shape.j] = 5;
 	if (monster_move === max_speed){
@@ -652,6 +649,9 @@ function shortest_path(moves){
 
 function locate_pacman(){
 	let emptyCell = findRandomEmptyCell(board);
+	while ((emptyCell[0] < 3 || emptyCell[0] > 11) && (emptyCell[1] < 3 || emptyCell[1] > 11)){
+		emptyCell = findRandomEmptyCell(board);
+	}
 	shape.i = emptyCell[0]
 	shape.j = emptyCell[1]
 	board[emptyCell[0]][emptyCell[1]]=5
@@ -697,10 +697,22 @@ function move_dog() {
 }
 
 function isCaptured(){
+	console.log('bla1')
 	return monsters.find((m)=>{
 		return m.last_c === 5
 	})
 }
+
+function ballsOnBoard() {
+	for(let i = 0; i < board.length; i++){
+		for (let j = 0; j < board[i].length; j++){
+			if (board[i][j] > 1 && board[i][j] < 5)
+				return true
+		}
+	}
+	return false
+}
+
 function isGameOver() {
 	if (life === 0) {
 		$('#message').text('Loser!!!')
@@ -708,9 +720,13 @@ function isGameOver() {
 	} else if (time_elapsed <= 0) {
 		$('#message').text('You Are Better Than ' + score + ' points')
 		return true
-	} else if (ball_numbers == 0) {
-		$('#message').text('Winner!!!')
-		return true
+	} else if (!ballsOnBoard()) {
+		if(!(monsters.find((m)=>{
+			return m.last_c > 1 && m1.last_c < 5
+		}))){
+			$('#message').text('Winner!!!')
+			return true
+		}
 	}
 	return false
 }
@@ -742,4 +758,16 @@ function reset_game(){
 	$("#warning").css('visibility','hidden')
 	$('.content').css('display','none')
 	$('#settings').css('display','block')
+}
+
+function about(){
+	if( $('#Game_Area').css('display') !== 'none' ){
+		window.clearInterval(interval)
+	}
+}
+
+function continue_game(){
+	if( $('#Game_Area').css('display') !== 'none' ){
+		window.setInterval(UpdatePosition,100)
+	}
 }
