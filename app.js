@@ -765,6 +765,7 @@ function snail_up(){
 
 function reset_game(){
 	window.clearInterval(interval)
+	mySound.pause()
 	$("#warning").css('visibility','hidden')
 	$('.content').css('display','none')
 	$('#settings').css('display','block')
@@ -774,7 +775,10 @@ function reset_game(){
 function lose(){
 	audio_game_over.play()
 	$("#loser").css('display','block')
-	setTimeout(function(){$("#loser").css('display','none')},4000)
+	setTimeout(function(){
+		$("#loser").css('display','none')
+		audio_game_over.pause()
+	},4000)
 
 
 }
@@ -782,13 +786,19 @@ function lose(){
 function win(){
 	audio_game_win.play()
 	$("#win").css('display','block')
-	setTimeout(function(){$("#win").css('display','none')},4000)
+	setTimeout(function(){
+		$("#win").css('display','none')
+		audio_game_win.pause()
+	},4000)
 
 }
 
 function time_lose(){
 	audio_game_over.play()
-	setTimeout(function(){$("#Timer_finish").css('display','none')},4000)
+	setTimeout(function(){
+		$("#Timer_finish").css('display','none')
+		audio_game_over.pause()
+	},4000)
 
 
 }
