@@ -76,6 +76,9 @@ body{
 
 }
 
+#text-dialog{
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+}
 #User{
     font-family: 'Yanone Kaffeesatz', sans-serif;
     font-size: 40px;
@@ -211,4 +214,35 @@ body{
     position:relative;
     top:-650px;
     left: 400px;
+}
+
+#Start_new_game{
+    position: absolute;
+    top:100px;
+    text-align: center;
+    right:1px;
+    background: yellow;
+    color: blue;
+    border: none;
+    padding: 7px 12px;
+    line-height: 1;
+    border-radius: 20px;
+    font-family: monospace;
+    text-align: center;
+    font-weight: bold;
+    font-size:26px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 9px #999;
+    margin-right: 50px;
+
+}
+#Start_new_game:hover{
+    background-color: #3e8e41
+}
+
+#Start_new_game:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
 }

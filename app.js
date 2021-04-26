@@ -45,6 +45,7 @@ let snail_flag
 let cure_flag
 let audio_game_over = new Audio('GameOver.mp3');
 let audio_game_win = new Audio('Win.mp3');
+let modal = document.getElementById('ex1')
 
 class User{
 	constructor(user_name,first_name,last_name,email,password,birthday) {
@@ -202,12 +203,8 @@ function Start() {
 	let food_remain = ball_numbers;
 	life = 5
 	let pacman_remain = 1;
-	console.log(food_remain)
-	console.log("hey3")
 	locate_pacman()
-	console.log("hey4")
 	for(let i = 0; i < monster_number;i++){
-		console.log("hey")
 		let mon = new Monster(urls[i][0],urls[i][1],board[urls[i][0]][urls[i][1]],urls[i][2])
 		board[urls[i][0]][urls[i][1]] = 6
 		monsters.push(mon)
@@ -222,8 +219,9 @@ function Start() {
 	board[6][7] = 7
 	keysDown = {};
 	add_listener()
-	// mySound = new Audio('among.mpeg')
-	// mySound.start()
+	mySound = new Audio('among.mpeg')
+	mySound.play()
+	mySound.loop = true
 	interval = setInterval(UpdatePosition, 100);
 }
 
@@ -458,6 +456,7 @@ function busted(){
 }
 function go_to_reg(){
 	if( $('#Game_Area').css('display') !== 'none' ){
+		mySound.pause()
 		window.clearInterval(interval)
 	}
 	$(".content").css("display","none")
@@ -466,6 +465,7 @@ function go_to_reg(){
 
 function go_to_login(){
 	if( $('#Game_Area').css('display') !== 'none' ){
+		mySound.pause()
 		window.clearInterval(interval)
 	}
 	$(".content").css("display","none")
@@ -474,6 +474,7 @@ function go_to_login(){
 
 function go_to_home(){
 	if( $('#Game_Area').css('display') !== 'none' ){
+		mySound.pause()
 		window.clearInterval(interval)
 	}
 	$(".content").css("display","none")
@@ -720,16 +721,19 @@ function ballsOnBoard() {
 
 function isGameOver() {
 	if (life === 0) {
+		mySound.pause()
 		lose()
 		return true
 	} else if (time_elapsed <= 0) {
 		$('#Timer_finish').text('You Are Better Than ' + score + ' points')
+		mySound.pause()
 		time_lose()
 		return true
 	} else if (!ballsOnBoard()) {
 		if(!(monsters.find((m)=>{
 			return m.last_c > 1 && m.last_c < 5
 		}))){
+			mySound.pause()
 			win()
 			return true
 		}
@@ -766,17 +770,6 @@ function reset_game(){
 	$('#settings').css('display','block')
 }
 
-function about(){
-	if( $('#Game_Area').css('display') !== 'none' ){
-		window.clearInterval(interval)
-	}
-}
-
-function continue_game(){
-	if( $('#Game_Area').css('display') !== 'none' ){
-		window.setInterval(UpdatePosition,100)
-	}
-}
 
 function lose(){
 	audio_game_over.play()

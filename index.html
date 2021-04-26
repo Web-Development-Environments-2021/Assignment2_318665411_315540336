@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>PacmanGo</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="styl.css">
 	<link rel="stylesheet" href="reg.css">
 	<link rel="stylesheet" href="login.css">
 	<link rel="stylesheet" href="game.css">
+	<link rel="icon" type="image/PNG" href="icon.png">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="/resources/demos/style.css">
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.css">
@@ -59,19 +61,26 @@
 </head>
 
 <body>
-<div id="ex1" class="modal">
+<div id="ex1" class="modal" on>
 	<div id="img-dialog">
 		<img src="https://i.pinimg.com/originals/7f/6f/21/7f6f2192fb315b043ac6ad72e7aceb63.jpg" width=60>
 	</div>
-	<div id="text-dialog"><p>Roi Reinshtein and Noa Tal</p></div>
+	<div id="text-dialog">
+		<p>Roi Reinshtein and Noa</p>
+		<p>The Jquery plugins we used were validtae for validation, datepicker for get the user birthday, and spectrum color picker for the balls</p>
+		<p>We didn't use any templates</p>
+		<p>Our main difficulties were bugs in the game endings and in the lose life situations.</p>
+	</div>
 	<a id="close" href="#" rel="modal:close" onclick="continue_game()">Close</a>
 </div>
 
 <ul id="menu">
-	<li><a class="active" onclick="go_to_home()">Home</a></li>
-	<li><a href="#" onclick="go_to_login()">Login</a></li>
-	<li><a href="#" onclick="go_to_reg()">Register</a></li>
-	<li  style="float:right" onclick="about()" oncancel="continue_game()"><a href="#ex1" rel="modal:open">About</a></li>
+	<li><img width="48" height="48" src="pac_logo.png"></li>
+	<li><a style="color: yellow">PacmanGo</a></li>
+	<li><a class="mi" class="active" onclick="go_to_home()">Home</a></li>
+	<li><a class="mi" href="#" onclick="go_to_login()">Login</a></li>
+	<li><a class="mi" href="#" onclick="go_to_reg()">Register</a></li>
+	<li style="float:right"><a href="#ex1" rel="modal:open">About</a></li>
 </ul>
 <div class="content" id="Welcome">
 	<image src="logo.gif"></image>
@@ -173,7 +182,7 @@
 	<div id="game">
 		<canvas id="canvas" height="600" width="600"></canvas>
 	</div>
-	<button onclick="reset_game()">Start New Game</button>
+	<button id="Start_new_game" onclick="reset_game()">Start New Game</button>
 	<h1 id="User" style="color:yellow;"></h1>
 	<div id ="setting_of_game">
 		<h1>settings</h1>
